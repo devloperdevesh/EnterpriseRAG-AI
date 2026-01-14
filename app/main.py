@@ -8,6 +8,10 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.tenants import router as tenants_router
 from app.api.v1.document import router as document_router
 from app.api.v1.rag import router as rag_router
+from app.core.cors import CustomCORSMiddleware
+
+app.add_middleware(CustomCORSMiddleware)
+
 
 
 app = FastAPI(title=settings.APP_NAME)
@@ -18,14 +22,15 @@ app = FastAPI(title=settings.APP_NAME)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",   # Vite frontend
-        "http://127.0.0.1:5173"
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
         "https://enterpriserag-ai.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # ================================
 # Register Routers
