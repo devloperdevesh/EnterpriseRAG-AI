@@ -1,0 +1,275 @@
+:root {
+    /* ===== Core Theme ===== */
+    --bg-canvas: #F6F7FB;
+    --bg-card: #FFFFFF;
+    --border: #E5E7EB;
+
+    --text-high: #0F172A;
+    --text-mid: #475569;
+    --text-muted: #94A3B8;
+
+    /* ===== Brand (Single Solid Premium Indigo) ===== */
+    --brand: #4F46E5;
+    --brand-hover: #4338CA;
+    --brand-soft: rgba(79, 70, 229, 0.08);
+
+    /* ===== Radius ===== */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+
+    /* ===== Shadows ===== */
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 10px 28px rgba(79, 70, 229, 0.08);
+
+    /* ===== Spacing ===== */
+    --space-xs: 6px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 32px;
+}
+
+/* ===== Reset ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg-canvas);
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--text-high);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Layout Container ===== */
+.content {
+    max-width: 1100px;
+    margin: var(--space-lg) auto;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===== Topbar ===== */
+.topbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-sm) var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: var(--shadow-sm);
+}
+
+.brand {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.brand span {
+    color: var(--brand);
+}
+
+/* ===== Buttons ===== */
+button,
+.primary,
+.nav-btn {
+    background: var(--brand);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.12s ease;
+}
+
+button:hover,
+.primary:hover,
+.nav-btn:hover {
+    background: var(--brand-hover);
+    transform: translateY(-1px);
+}
+
+/* ===== Cards ===== */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--space-md);
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+}
+
+/* ===== Typography ===== */
+h1,
+h2,
+h3 {
+    margin: 0;
+}
+
+p {
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-sm);
+    color: var(--text-mid);
+    font-size: 14px;
+}
+
+/* ===== Inputs ===== */
+.textbox,
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    outline: none;
+    text-align: center;
+}
+
+.textbox:focus,
+input:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px var(--brand-soft);
+}
+
+/* ===== File Upload Style ===== */
+.file-input {
+    display: block;
+    margin: var(--space-sm) 0;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--border);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-mid);
+    transition: 0.2s ease;
+}
+
+.file-input:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+}
+
+.file-input input {
+    display: none;
+}
+
+/* ===== Status Text ===== */
+.status {
+    font-size: 13px;
+    margin-top: var(--space-xs);
+    color: var(--text-mid);
+}
+
+/* ===== Footer ===== */
+.footer {
+    text-align: center;
+    padding: var(--space-sm);
+    font-size: 13px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    background: var(--bg-card);
+}
+
+/* ===== Side Menu ===== */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 260px;
+    height: 100%;
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.06);
+    padding: var(--space-md);
+    transition: right 0.3s ease;
+    z-index: 40;
+}
+
+.side-menu.open {
+    right: 0;
+}
+
+.side-menu h3 {
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+}
+
+.side-menu button {
+    width: 100%;
+    margin-top: var(--space-xs);
+}
+
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.15);
+    z-index: 30;
+}
+/* Upload Card Specific */
+.upload-card {
+    text-align: center;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.card-subtitle {
+    margin-top: 6px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* File Picker */
+.file-picker {
+    display: block;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-mid);
+    margin-bottom: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.file-picker:hover {
+    border-color: var(--brand);
+}
+
+.file-picker input {
+    display: none;
+}
+
+/* Utility */
+.full-width {
+    width: 100%;
+}
+
+/* Status text */
+.status {
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.status.success {
+    color: #16A34A;
+}
+
+.status.error {
+    color: #DC2626;
+}
