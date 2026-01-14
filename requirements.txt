@@ -17,3 +17,4 @@ requests
 python-dotenv
 gunicorn
 PyPDF2
+pydantic-settings
