@@ -1,5 +1,6 @@
 fastapi
 uvicorn[standard]
+
 pydantic
 pydantic-settings
 python-jose
@@ -9,10 +10,12 @@ sqlalchemy
 asyncpg
 redis
 
-sentence-transformers
-faiss-cpu
 python-multipart
 python-dotenv
 requests
 gunicorn
 PyPDF2
+
+sentence-transformers==2.7.0
+faiss-cpu==1.7.4
+torch==2.1.0+cpu
