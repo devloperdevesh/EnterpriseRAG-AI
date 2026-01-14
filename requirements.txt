@@ -1,7 +1,7 @@
 fastapi
 uvicorn[standard]
-
 pydantic
+pydantic-settings
 python-jose
 passlib[bcrypt]
 
@@ -11,10 +11,8 @@ redis
 
 sentence-transformers
 faiss-cpu
-
 python-multipart
-requests
 python-dotenv
+requests
 gunicorn
 PyPDF2
-pydantic-settings
