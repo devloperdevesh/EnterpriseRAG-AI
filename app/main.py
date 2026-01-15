@@ -8,6 +8,10 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.tenants import router as tenants_router
 from app.api.v1.document import router as document_router
 from app.api.v1.rag import router as rag_router
+from app.db.base import Base
+from app.db.session import engine
+Base.metadata.create_all(bind=engine)
+
 
 
 #  Step 1: Create FastAPI app FIRST
