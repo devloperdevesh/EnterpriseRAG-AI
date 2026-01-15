@@ -8,16 +8,16 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.tenants import router as tenants_router
 from app.api.v1.document import router as document_router
 from app.api.v1.rag import router as rag_router
-from app.db.base import Base
-from app.db.session import engine
-Base.metadata.create_all(bind=engine)
-
-
 
 #  Step 1: Create FastAPI app FIRST
 app = FastAPI(title=settings.APP_NAME)
 
-#  Step 2: Add CORS Middleware
+#  Step 2: Database table creation AFTER app
+from app.db.base import Base
+from app.db.session import engine
+Base.metadata.create_all(bind=engine)
+
+#  Step 3: CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -30,13 +30,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#  Step 3: Register Routers
+#  Step 4: Routers
 app.include_router(auth_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
 
-#  Step 4: Routes
+#  Step 5: Routes
 @app.get("/")
 def root():
     return {"message": "EnterpriseRAG backend running"}
