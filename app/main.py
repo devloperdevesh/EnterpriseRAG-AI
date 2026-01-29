@@ -9,15 +9,26 @@ from app.api.v1.tenants import router as tenants_router
 from app.api.v1.document import router as document_router
 from app.api.v1.rag import router as rag_router
 
-#  Step 1: Create FastAPI app FIRST
+from app.db.init_db import init_db
+
+
+# =====================================
+# Create FastAPI App
+# =====================================
 app = FastAPI(title=settings.APP_NAME)
 
-#  Step 2: Database table creation AFTER app
-from app.db.base import Base
-from app.db.session import engine
-Base.metadata.create_all(bind=engine)
 
-#  Step 3: CORS
+# =====================================
+# Initialize Database on Startup
+# =====================================
+@app.on_event("startup")
+async def startup_event():
+    init_db()
+
+
+# =====================================
+# CORS Middleware
+# =====================================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -30,20 +41,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#  Step 4: Routers
+
+# =====================================
+# Register Routers
+# =====================================
 app.include_router(auth_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
 
-#  Step 5: Routes
+
+# =====================================
+# Basic Routes
+# =====================================
 @app.get("/")
 def root():
     return {"message": "EnterpriseRAG backend running"}
 
+
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
 
 @app.get("/protected")
 def protected(user=Depends(get_current_user)):
