@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+frontend/node_modules/
+uploaded_docs/
+*.db
+.env
