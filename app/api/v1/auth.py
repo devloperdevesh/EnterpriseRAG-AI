@@ -1,22 +1,21 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
 
-from app.core.security import (
-    verify_password,
-    create_access_token,
-    hash_password
-)
 from app.db.deps import get_db
 from app.models.user import User
+from app.core.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-# =====================================
-# Request Schemas
-# =====================================
-
+# ======================
+# Schemas
+# ======================
 class SignupRequest(BaseModel):
     email: EmailStr
     password: str
@@ -27,73 +26,52 @@ class LoginRequest(BaseModel):
     password: str
 
 
-# =====================================
+# ======================
 # Signup
-# =====================================
-
-@router.post("/signup", status_code=status.HTTP_201_CREATED)
-async def signup(
-    data: SignupRequest,
-    db: Session = Depends(get_db)
-):
-    email = data.email.strip().lower()
-
-    # Check existing user
-    if db.query(User).filter(User.email == email).first():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User already exists"
-        )
-
-    user = User(
-        email=email,
-        hashed_password=hash_password(data.password),
-        tenant_id=None,      
-        role="user"
-    )
-
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-
-    return {
-        "message": "User created successfully",
-        "user_id": user.id
-    }
-
-
-# =====================================
-# Login
-# =====================================
-
-@router.post("/login")
-async def login(
-    data: LoginRequest,
-    db: Session = Depends(get_db)
-):
-    email = data.email.strip().lower()
+# ======================
+@router.post("/signup", status_code=201)
+def signup(payload: SignupRequest, db: Session = Depends(get_db)):
+    email = payload.email.lower()
 
     user = db.query(User).filter(User.email == email).first()
+    if user:
+        raise HTTPException(status_code=400, detail="User already exists")
 
-    # Invalid credentials
-    if not user or not verify_password(
-        data.password,
-        user.hashed_password     
-    ):
+    new_user = User(
+        email=email,
+        hashed_password=hash_password(payload.password),
+        role="user",
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"message": "User created successfully"}
+
+
+# ======================
+# Login
+# ======================
+@router.post("/login")
+def login(payload: LoginRequest, db: Session = Depends(get_db)):
+    email = payload.email.lower()
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+            detail="Invalid credentials",
         )
 
-    access_token = create_access_token(
-        data={
+    token = create_access_token(
+        {
             "user_id": user.id,
-            "tenant_id": user.tenant_id,
-            "role": user.role
+            "role": user.role,
         }
     )
 
     return {
-        "access_token": access_token,
-        "token_type": "bearer"
+        "access_token": token,
+        "token_type": "bearer",
     }

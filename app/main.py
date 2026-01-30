@@ -11,62 +11,55 @@ from app.api.v1.rag import router as rag_router
 
 from app.db.init_db import init_db
 
-
-# =====================================
+# ===============================
 # Create FastAPI App
-# =====================================
+# ===============================
 app = FastAPI(title=settings.APP_NAME)
 
-
-# =====================================
-# Initialize Database on Startup
-# =====================================
+# ===============================
+# Initialize DB on startup
+# ===============================
 @app.on_event("startup")
-async def startup_event():
+def startup_event():
     init_db()
 
-
-# =====================================
-# CORS Middleware
-# =====================================
+# ===============================
+# CORS
+# ===============================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://enterpriserag-ai.vercel.app"
+        "https://enterpriserag-ai.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-# =====================================
-# Register Routers
-# =====================================
+# ===============================
+# Routers
+# ===============================
 app.include_router(auth_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
 
-
-# =====================================
-# Basic Routes
-# =====================================
+# ===============================
+# Health Routes
+# ===============================
 @app.get("/")
 def root():
     return {"message": "EnterpriseRAG backend running"}
-
 
 @app.get("/health")
 def health():
     return {"status": "healthy"}
 
-
 @app.get("/protected")
 def protected(user=Depends(get_current_user)):
     return {
         "message": "You are authenticated",
-        "user": user
+        "user": user,
     }
