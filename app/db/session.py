@@ -1,12 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-
-# SQLite DB file
-DATABASE_URL = "sqlite:///./enterprise.db"
+from app.core.config import settings
 
 engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    settings.DATABASE_URL,
+    pool_pre_ping=True
 )
 
 SessionLocal = sessionmaker(
@@ -16,3 +14,4 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
+
