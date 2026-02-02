@@ -1,5 +1,6 @@
 from app.db.session import engine
 from app.db.base import Base
+from app.db import models
 
 # IMPORTANT: import models so tables are registered
 from app.models.user import User
