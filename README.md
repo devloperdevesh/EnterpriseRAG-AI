@@ -67,7 +67,7 @@ EnterpriseRAG-AI/
 ├── requirements.txt
 └── README.md
 
-**🔐 Authentication Flow
+🔐 Authentication Flow
 Signup
 {
   "email": "user@company.com",
@@ -139,4 +139,4 @@ Protected routes via dependency injection
 Devesh Chauhan
 AI / Backend Engineer
 
-GitHub: https://github.com/devloperdevesh**
+GitHub: https://github.com/devloperdevesh
