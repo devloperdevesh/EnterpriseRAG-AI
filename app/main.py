@@ -17,14 +17,14 @@ from app.db.init_db import init_db
 app = FastAPI(title=settings.APP_NAME)
 
 # ===============================
-# Initialize DB on startup
+# Initialize DB
 # ===============================
 @app.on_event("startup")
 def startup_event():
     init_db()
 
 # ===============================
-# CORS
+# CORS (FINAL & CORRECT)
 # ===============================
 app.add_middleware(
     CORSMiddleware,

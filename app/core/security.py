@@ -6,26 +6,31 @@ from passlib.context import CryptContext
 
 from app.core.config import settings
 
+# ===============================
 # Password hashing context
+# ===============================
 pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto"
 )
 
-# --------------------
+# ===============================
 # PASSWORD UTILITIES
-# --------------------
+# ===============================
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    # bcrypt supports max 72 bytes
+    password_bytes = password.encode("utf-8")[:72]
+    return pwd_context.hash(password_bytes)
 
 
 def verify_password(password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(password, hashed_password)
+    password_bytes = password.encode("utf-8")[:72]
+    return pwd_context.verify(password_bytes, hashed_password)
 
-# --------------------
+# ===============================
 # JWT UTILITIES
-# --------------------
+# ===============================
 
 def create_access_token(
     data: dict,
@@ -39,24 +44,24 @@ def create_access_token(
         else timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
 
-    to_encode.update({"exp": expire})
+    to_encode.update({
+        "exp": expire,
+        "sub": str(data.get("user_id"))  # STANDARD & SAFE
+    })
 
-    encoded_jwt = jwt.encode(
+    return jwt.encode(
         to_encode,
         settings.SECRET_KEY,
         algorithm="HS256"
     )
 
-    return encoded_jwt
-
 
 def decode_access_token(token: str) -> Optional[dict]:
     try:
-        payload = jwt.decode(
+        return jwt.decode(
             token,
             settings.SECRET_KEY,
             algorithms=["HS256"]
         )
-        return payload
     except JWTError:
         return None
