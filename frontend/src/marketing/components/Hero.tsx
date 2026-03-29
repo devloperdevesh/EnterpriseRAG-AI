@@ -1,3 +1,7 @@
+import FloatingSphere from "../../components/FloatingSphere";
+<FloatingSphere />
+import ParticlesBg from "../../components/ParticlesBg";\
+<ParticlesBg />
 export default function Hero() {
     return (
       <div className="text-center py-24">
@@ -44,6 +48,23 @@ export default function StreamingChat() {
     <div>
       <button onClick={fakeStream}>Ask</button>
       <p>{text}</p>
+    </div>
+  );
+}
+
+import Hero from "../components/Hero";
+import Impact from "../components/Impact";
+import ParticlesBg from "../../components/ParticlesBg";
+
+export default function Home() {
+  return (
+    <div className="relative">
+
+      <ParticlesBg />
+
+      <Hero />
+      <Impact />
+
     </div>
   );
 }

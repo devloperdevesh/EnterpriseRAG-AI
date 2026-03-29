@@ -20,3 +20,4 @@ export default function Documents() {
     </div>
   );
 }
+{loading ? <Loader /> : <ActualContent />}
