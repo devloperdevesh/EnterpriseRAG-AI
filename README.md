@@ -203,6 +203,14 @@ GitHub: https://github.com/devloperdevesh
 
 ---
 
+Load Test: k6 (10 min sustained traffic)
+
+Users: 1000 virtual users
+Throughput: ~850 req/sec
+p95 latency: 480ms
+p99 latency: 720ms
+Error rate: <1%
+
 ## Summary
 
 This project demonstrates the design and implementation of a scalable AI system combining backend engineering, retrieval systems, and modern frontend architecture.
