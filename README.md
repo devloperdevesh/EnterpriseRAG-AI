@@ -1,87 +1,140 @@
-# EnterpriseRAG AI
+# EnterpriseRAG AI — High-Concurrency Distributed RAG System
 
-Scalable multi-tenant AI knowledge system for large-scale document intelligence using Retrieval-Augmented Generation (RAG).
+A production-oriented, multi-tenant backend system for large-scale document intelligence using Retrieval-Augmented Generation (RAG). Designed for high concurrency, low latency, and predictable behavior under load.
+
+---
+
+## Highlights
+
+* ~850 req/sec sustained throughput
+* ~480 ms p95 latency (p99 ~720 ms)
+* ~40% latency reduction via optimization
+* <1% error rate under load
+* Multi-tenant isolation with scalable architecture
+
+---
+
+## Table of Contents
+
+* Overview
+* Problem
+* Approach
+* Architecture
+* Core Components
+* Performance & Load Testing
+* Engineering Highlights
+* Tech Stack
+* Deployment
+* API Overview
+* Design Decisions
+* Future Work
+* What This Demonstrates
 
 ---
 
 ## Overview
 
-EnterpriseRAG AI is a distributed backend system designed to process and query large document datasets using semantic retrieval and LLM-based response generation.
-
-The system focuses on high-concurrency performance, tenant isolation, and predictable behavior under load.
-
----
-
-## Live System
-
-- Frontend: https://enterpriserag-ai.vercel.app  
-- Backend API: https://enterpriserag-production.up.railway.app  
+EnterpriseRAG AI is a distributed, multi-tenant backend designed to process and query large document corpora using semantic retrieval and LLM-based generation. The system prioritizes correctness, latency, and reliability in real-world workloads.
 
 ---
 
 ## Problem
 
-Traditional document systems struggle with:
+Traditional document systems break at scale due to:
 
-- Inefficient keyword-based search  
-- Lack of contextual understanding  
-- Hallucinated responses due to missing grounding  
-
----
-
-## Solution
-
-The system addresses these challenges using:
-
-- Semantic vector search (FAISS)  
-- Retrieval-Augmented Generation (RAG)  
-- Multi-tenant architecture with strict isolation  
-
-This enables context-aware and scalable document querying.
+* Keyword-based retrieval (poor semantic understanding)
+* Hallucinated responses without grounding
+* High latency under concurrent traffic
+* Lack of tenant isolation in SaaS scenarios
 
 ---
 
-## Key Features
+## Approach
 
-### Authentication and Security
+The system combines:
 
-- JWT-based authentication with expiry  
-- Secure password hashing (bcrypt)  
-- Tenant-aware access control  
+* Vector-based semantic retrieval (FAISS)
+* Retrieval-Augmented Generation (RAG)
+* Async API layer for concurrency
+* Tenant-aware data isolation
 
----
-
-### Multi-Tenant Architecture
-
-- Workspace-level isolation  
-- No cross-tenant data leakage  
-- SaaS-ready backend design  
+This enables context-aware responses with stable performance under load.
 
 ---
 
-### Document Processing Pipeline
+## Architecture
 
-- Document upload and ingestion  
-- Context-aware chunking  
-- Embedding generation (Sentence Transformers)  
-- Vector indexing using FAISS  
+```text
+Client
+  ↓
+CDN / Edge
+  ↓
+Load Balancer
+  ↓
+FastAPI (Async API Layer)
+  ↓
+Redis (Caching - planned)
+  ↓
+FAISS (Vector Retrieval)
+  ↓
+LLM (Response Generation)
+  ↓
+PostgreSQL (Metadata / Tenancy)
+```
 
 ---
 
-### RAG Query Engine
+## Core Components
 
-- Semantic retrieval (top-K search)  
-- Context injection into LLM  
-- Grounded response generation  
+### API Layer
+
+* Async FastAPI services (non-blocking)
+* Stateless design for horizontal scaling
+
+### Retrieval System
+
+* Document chunking
+* Embedding generation (transformers)
+* Top-K semantic retrieval via FAISS
+
+### Generation Layer
+
+* Context injection into LLM
+* Grounded response generation
+
+### Data Layer
+
+* PostgreSQL for relational metadata and tenancy
+* FAISS for vector indexing
 
 ---
 
-### Performance
+## Performance & Load Testing
 
-- Handles 100K+ documents  
-- Tested under high-concurrency load  
-- ~40% latency reduction via system optimizations  
-- Designed toward high-throughput scalability  
+* Tool: k6
+* Duration: 10 minutes sustained traffic
+
+| Metric      | Value        |
+| ----------- | ------------ |
+| Throughput  | ~850 req/sec |
+| p95 Latency | ~480 ms      |
+| p99 Latency | ~720 ms      |
+| Error Rate  | <1%          |
+
+Results show stable performance under high concurrency.
+
+---
+
+## Engineering Highlights
+
+| Area            | Implementation                          |
+| --------------- | --------------------------------------- |
+| Concurrency     | Async request handling (FastAPI)        |
+| Scalability     | Stateless services + horizontal scaling |
+| Latency         | ~40% reduction via optimized flow       |
+| Fault Tolerance | Retries, timeouts, circuit breakers     |
+| Traffic Control | Rate limiting + backpressure            |
+| Reliability     | Stable under traffic spikes             |
 
 ---
 
@@ -89,108 +142,86 @@ This enables context-aware and scalable document querying.
 
 ### Backend
 
-- FastAPI  
-- PostgreSQL  
-- SQLAlchemy  
-- FAISS  
-- Sentence Transformers  
-- JWT (python-jose)  
-- Passlib (bcrypt)  
+* FastAPI
+* PostgreSQL
+* SQLAlchemy
+* FAISS
 
----
+### AI Layer
+
+* Sentence Transformers
+* LLM APIs
 
 ### Frontend
 
-- React (Vite)  
-- TypeScript  
-- Axios  
-- Zustand  
+* React
+* TypeScript
 
----
+### Infrastructure
 
-## System Architecture
-
-Client → CDN → Load Balancer → FastAPI (Async API Layer)  
-→ Cache Layer (Redis - planned)  
-→ FAISS (Vector Search)  
-→ LLM (Response Generation)  
-
----
-
-## RAG Flow
-
-1. Documents are uploaded  
-2. Content is chunked into segments  
-3. Embeddings are generated  
-4. Stored in FAISS vector index  
-5. User query is embedded  
-6. Top-K relevant chunks retrieved  
-7. LLM generates grounded response  
-
----
-
-## Load Testing
-
-- Tool: k6  
-- Duration: 10 minutes sustained traffic  
-
-Results:
-
-- ~850 req/sec throughput  
-- p95 latency: ~480ms  
-- p99 latency: ~720ms  
-- Error rate: <1%  
-
----
-
-## Engineering Highlights
-
-- Designed async backend for non-blocking request handling  
-- Implemented backpressure-aware request flow  
-- Optimized latency using retrieval and processing strategies  
-- Built system resilient to load spikes and partial failures  
+* AWS (EC2, S3, IAM — production-style deployment)
+* Railway (current hosting)
+* Vercel (frontend)
+* Docker (containerization-ready)
 
 ---
 
 ## Deployment
 
-- Frontend: Vercel  
-- Backend: Railway  
-- Database: PostgreSQL  
+* Backend deployed on cloud infrastructure (AWS EC2 / Railway)
+* Frontend hosted on Vercel
+* Designed for container-based deployment (Docker)
 
 ---
 
-## Security
+## API Overview
 
-- JWT authentication with expiry  
-- Secure password hashing  
-- Tenant-based isolation  
-- Protected API routes  
+### Upload Document
+
+* Stores and processes documents
+
+### Query Endpoint
+
+* Accepts user query
+* Retrieves top-K relevant chunks
+* Generates grounded response
+
+### Auth
+
+* JWT-based authentication
+* Tenant-scoped access
 
 ---
 
-## Future Enhancements
+## Design Decisions
 
-- Redis caching layer  
-- Observability (metrics and logging)  
-- Hybrid search (keyword + vector)  
-- Streaming responses (WebSockets)  
-- Kubernetes-based deployment  
-- Multi-LLM support  
+* Async-first architecture → maximize throughput
+* Stateless services → enable horizontal scaling
+* Decoupled components → maintainability and extensibility
+* RAG over pure LLM → improved correctness and reduced hallucination
+
+---
+
+## Future Work
+
+* Redis caching layer
+* Observability (metrics, logs, tracing)
+* Hybrid search (keyword + vector)
+* Streaming responses (WebSockets)
+* Kubernetes-based deployment
+
+---
+
+## What This Demonstrates
+
+* Real-world distributed systems design
+* High-concurrency backend engineering
+* Low-latency system optimization
+* Trade-off awareness (latency vs cost vs accuracy)
 
 ---
 
 ## Author
 
-Devesh Chauhan  
-Backend Systems Engineer — Distributed Systems — AI Infrastructure  
-
-GitHub: https://github.com/devloperdevesh  
-
----
-
-## Summary
-
-This project demonstrates the design of a production-oriented distributed system combining retrieval systems, backend engineering, and real-world performance considerations.
-
-The focus is on scalability, system behavior under load, and engineering trade-offs rather than isolated feature development.
+Devesh Chauhan
+Backend Systems Engineer — Distributed Systems — AI Infrastructure
