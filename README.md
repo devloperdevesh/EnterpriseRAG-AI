@@ -1,3 +1,30 @@
+<p align="center">
+  <img src="./banner.png" alt="EnterpriseRAG AI Banner" />
+</p>
+
+<p align="center">
+  <b>High-concurrency distributed RAG system handling ~850 req/sec with sub-500ms latency.</b>
+</p>
+
+<p align="center">
+  850+ req/sec • 480ms p95 • 40% latency reduction
+</p>
+
+<p align="center">
+  FastAPI • Redis • Kafka • PostgreSQL • AWS • Observability
+</p>
+
+<p align="center">
+  <a href="https://enterpriserag-ai.vercel.app/">
+    <img src="https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge" />
+  </a>
+  <a href="https://github.com/devloperdevesh/EnterpriseRAG-AI">
+    <img src="https://img.shields.io/badge/Code-GitHub-black?style=for-the-badge&logo=github" />
+  </a>
+</p>
+
+---
+
 # EnterpriseRAG AI — High-Concurrency Distributed RAG System
 
 A production-oriented, multi-tenant backend system for large-scale document intelligence using Retrieval-Augmented Generation (RAG). Designed for high concurrency, low latency, and predictable behavior under load.
