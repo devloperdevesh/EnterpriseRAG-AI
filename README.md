@@ -29,11 +29,11 @@ A production-oriented, multi-tenant backend system for large-scale document inte
 
 ## Highlights
 
-* ~850 req/sec sustained throughput
-* ~480 ms p95 latency (p99 ~720 ms)
-* ~40% latency reduction via optimization
-* <1% error rate under load
-* Multi-tenant isolation with scalable architecture
+* High-throughput system handling ~850 req/sec  
+* Sub-500ms latency under sustained load  
+* ~40% latency optimization through system design  
+* Fault-tolerant architecture with <1% error rate  
+* Multi-tenant SaaS-ready backend design  
 
 ---
 
@@ -106,6 +106,14 @@ PostgreSQL (Metadata / Tenancy)
 ```
 
 ---
+
+##  Query Execution Flow
+
+1. Documents are ingested and chunked  
+2. Embeddings are generated and stored in FAISS  
+3. User query is embedded  
+4. Top-K relevant chunks retrieved  
+5. Context passed to LLM for grounded response  
 
 ## Core Components
 
@@ -224,6 +232,13 @@ Results show stable performance under high concurrency.
 * RAG over pure LLM → improved correctness and reduced hallucination
 
 ---
+
+## Trade-offs
+
+- Vector search improves semantic accuracy but adds memory overhead  
+- Async architecture improves throughput but increases debugging complexity  
+- Multi-tenant isolation improves security but adds schema and query overhead
+  
 
 ## Future Work
 
