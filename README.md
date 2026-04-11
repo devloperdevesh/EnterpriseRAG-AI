@@ -18,14 +18,10 @@
   <a href="https://enterpriserag-ai.vercel.app/">
     <img src="https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge" />
   </a>
-  <a href="https://github.com/devloperdevesh/EnterpriseRAG-AI">
-    <img src="https://img.shields.io/badge/Code-GitHub-black?style=for-the-badge&logo=github" />
-  </a>
+
 </p>
 
 ---
-
-# EnterpriseRAG AI — High-Concurrency Distributed RAG System
 
 A production-oriented, multi-tenant backend system for large-scale document intelligence using Retrieval-Augmented Generation (RAG). Designed for high concurrency, low latency, and predictable behavior under load.
 
