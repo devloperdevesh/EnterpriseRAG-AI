@@ -1,8 +1,0 @@
-venv/
-__pycache__/
-*.pyc
-.env
-uploaded_docs/
-frontend/node_modules/
-frontend/dist/
-enterprise.db
