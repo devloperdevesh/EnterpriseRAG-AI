@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
+import Home from "../marketing/pages/Home";
 
 /*  STYLES  */
 import "./styles/variables.css";
