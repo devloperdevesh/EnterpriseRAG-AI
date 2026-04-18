@@ -1,13 +1,24 @@
 import { create } from "zustand";
 
-export const useAppStore = create((set) => ({
+type AppState = {
+  user: any;
+  setUser: (user: any) => void;
+
+  sidebarOpen: boolean;
+  toggleSidebar: () => void;
+
+  loading: boolean;
+  setLoading: (val: boolean) => void;
+};
+
+export const useAppStore = create<AppState>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
 
-  loading: false,
-  setLoading: (loading) => set({ loading }),
+  sidebarOpen: true,
+  toggleSidebar: () =>
+    set((state) => ({ sidebarOpen: !state.sidebarOpen })),
 
-  theme: "dark",
-  toggleTheme: () =>
-    set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
+  loading: false,
+  setLoading: (val) => set({ loading: val }),
 }));

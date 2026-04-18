@@ -3,18 +3,27 @@ import ReactDOM from "react-dom/client";
 
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
-import Home from "../marketing/pages/Home";
 
-/*  STYLES  */
-import "./styles/variables.css";
-import "./styles/globals.css";
-import "./styles/layout.css";
-import "./styles/components.css";
-import "./styles/pages.css";
-import "./styles/utilities.css";
+/* STYLES */
+import "./styles/base/reset.css";
+import "./styles/base/typography.css";
 
-/* ROOT RENDER */
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+import "./styles/themes/colors.css";
+import "./styles/themes/variables.css";
+
+import "./styles/layout/container.css";
+import "./styles/layout/navbar.css";
+
+import "./styles/components/button.css";
+import "./styles/components/card.css";
+
+import "./styles/pages/home.css";
+import "./styles/pages/dashboard.css";
+
+import "./styles/utils/spacing.css";
+import "./styles/utils/animations.css";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
       <App />

@@ -1,0 +1,96 @@
+/* =========================
+   CHAT CONTAINER
+========================= */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* =========================
+   MULTI LENS
+========================= */
+.lens {
+    display: flex;
+    gap: 8px;
+    padding: 10px 20px;
+}
+
+.lens button {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.lens button:hover {
+    background: #f1f5f9;
+}
+
+.lens button.active {
+    background: black;
+    color: white;
+    border-color: black;
+}
+
+/* =========================
+   CHAT BOX
+========================= */
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* =========================
+   MESSAGE BUBBLES
+========================= */
+.chat-bubble {
+    max-width: 60%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* USER */
+.chat-bubble.user {
+    background: #111827;
+    color: white;
+    margin-left: auto;
+}
+
+/* AI */
+.chat-bubble.ai {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+/* =========================
+   INPUT AREA
+========================= */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid var(--border);
+    background: white;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.chat-input input:focus {
+    outline: none;
+    border-color: var(--primary);
+}

@@ -1,0 +1,31 @@
+.sidebar {
+    width: 240px;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+    background: #ffffff;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.nav a {
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    transition: 0.2s;
+}
+
+.nav a:hover {
+    background: #f1f5f9;
+    color: black;
+}
+
+/* 🔥 ACTIVE LINK */
+.nav a.active {
+    background: #e2e8f0;
+    color: black;
+    font-weight: 500; }

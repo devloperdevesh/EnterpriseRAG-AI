@@ -5,28 +5,40 @@
   <meta charset="UTF-8" />
 
   <!-- Title -->
-  <title>EnterpriseRAG AI — Intelligent AI Platform</title>
+  <title>EnterpriseRAG AI — Intelligent Document AI</title>
 
   <!-- SEO -->
-  <meta name="description" content="Enterprise-grade AI platform with RAG, high concurrency, and low latency." />
+  <meta name="description"
+    content="AI-powered document intelligence platform with multi-lens analysis, real-time search, and enterprise-grade performance." />
 
   <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Theme -->
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#ffffff" />
 
-  <!--  FINAL FAVICON -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- Fonts -->
+  <!-- Fonts (Premium Look) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="EnterpriseRAG AI" />
+  <meta property="og:description" content="AI that understands your documents instantly." />
+  <meta property="og:type" content="website" />
 
 </head>
 
-<body style="margin:0; background:#0f172a; font-family:Inter, sans-serif;">
+<body>
 
+  <!-- Loading Screen  -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- React App -->
   <div id="root"></div>
 
   <script type="module" src="/src/main.tsx"></script>
