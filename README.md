@@ -1,11 +1,10 @@
-# EnterpriseRAG AI
-
-<p align="center">
-  <strong>Production-Grade Distributed RAG Infrastructure for High-Concurrency AI Systems</strong>
-</p>
 
 <p align="center">
   <img src="./banner.png" alt="EnterpriseRAG AI Banner" />
+</p>
+
+<p align="center">
+  <strong>Production-Grade Distributed RAG Infrastructure for High-Concurrency AI Systems</strong>
 </p>
 
 <p align="center">
