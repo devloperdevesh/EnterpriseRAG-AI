@@ -1,6 +1,10 @@
 # EnterpriseRAG AI
 
 <p align="center">
+  <strong>Production-Grade Distributed RAG Infrastructure for High-Concurrency AI Systems</strong>
+</p>
+
+<p align="center">
   <img src="./banner.png" alt="EnterpriseRAG AI Banner" />
 </p>
 
@@ -21,6 +25,27 @@
     <img src="https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge" />
   </a>
 </p>
+
+---
+
+## Executive Summary
+
+EnterpriseRAG AI is a production-oriented distributed AI platform engineered for large-scale Retrieval-Augmented Generation (RAG) workloads under sustained concurrent traffic.
+
+The platform combines semantic retrieval, asynchronous processing, distributed observability, realtime streaming, and reliability-first backend engineering to deliver low-latency AI responses at scale.
+
+Unlike traditional prototype-style RAG applications, the system is designed around infrastructure and platform engineering principles including:
+
+* async-first concurrency
+* distributed tracing
+* reliability engineering
+* queue-based processing
+* observability-driven diagnostics
+* multi-tenant isolation
+* failure replay workflows
+* streaming inference delivery
+
+The architecture prioritizes predictable latency, fault tolerance, and operational visibility under high-concurrency workloads.
 
 ---
 
@@ -57,7 +82,7 @@ The platform is engineered using distributed systems principles to maintain stab
 
 ---
 
-# Architecture
+# High-Level Architecture
 
 ```text
 Client Applications
@@ -79,7 +104,7 @@ PostgreSQL Metadata Layer
 
 ---
 
-# Request Lifecycle
+# End-to-End Request Lifecycle
 
 ```text
 1. User submits query
@@ -96,7 +121,7 @@ PostgreSQL Metadata Layer
 
 ---
 
-# Core Engineering Components
+# Core Platform Components
 
 ## Async API Layer
 
@@ -144,7 +169,7 @@ PostgreSQL Metadata Layer
 
 ---
 
-# Observability & Monitoring
+# Observability, Monitoring & Diagnostics
 
 | Component          | Purpose                    |
 | ------------------ | -------------------------- |
@@ -167,7 +192,7 @@ Tracked metrics include:
 
 ---
 
-# Distributed Systems Features
+# Distributed Systems Engineering
 
 | Area            | Implementation               |
 | --------------- | ---------------------------- |
@@ -182,7 +207,7 @@ Tracked metrics include:
 
 ---
 
-# Performance & Load Testing
+# Performance Engineering & Load Testing
 
 Load testing performed using Locust and k6 under sustained concurrent traffic.
 
@@ -194,11 +219,20 @@ Load testing performed using Locust and k6 under sustained concurrent traffic.
 | Error Rate  | <1%                 |
 | Concurrency | High sustained load |
 
-The system maintained stable throughput and predictable latency during concurrent request spikes.
+The platform maintained stable throughput and predictable tail latency during sustained concurrency spikes and realtime inference workloads.
+
+Key performance optimizations included:
+
+* async non-blocking request execution
+* streaming response delivery
+* optimized retrieval pipeline flow
+* reduced synchronous bottlenecks
+* queue-based workload isolation
+* observability-driven bottleneck analysis
 
 ---
 
-# Failure Handling Architecture
+# Reliability & Failure Handling
 
 ```text
 Request Failure
@@ -225,7 +259,7 @@ Key reliability mechanisms:
 
 ---
 
-# Streaming Architecture
+# Realtime Streaming Infrastructure
 
 ```text
 LLM Token Generation
@@ -246,7 +280,7 @@ Supported capabilities:
 
 ---
 
-# Technology Stack
+# Technology Stack & Infrastructure
 
 ## Backend
 
@@ -286,7 +320,7 @@ Supported capabilities:
 
 ---
 
-# Deployment Architecture
+# Deployment & Infrastructure Topology
 
 | Layer         | Platform             |
 | ------------- | -------------------- |
@@ -300,7 +334,7 @@ Supported capabilities:
 
 ---
 
-# API Capabilities
+# API Surface
 
 ## Document Processing
 
@@ -323,7 +357,7 @@ Supported capabilities:
 
 ---
 
-# Engineering Decisions
+# Engineering Trade-offs & Design Decisions
 
 | Decision                  | Benefit                       | Trade-off                      |
 | ------------------------- | ----------------------------- | ------------------------------ |
@@ -348,7 +382,7 @@ Supported capabilities:
 
 ---
 
-# What This Project Demonstrates
+# Engineering Areas Demonstrated
 
 * Distributed systems engineering
 * High-concurrency backend architecture
@@ -358,6 +392,23 @@ Supported capabilities:
 * Low-latency optimization under load
 * Streaming AI infrastructure patterns
 * Production-oriented backend engineering
+
+---
+
+# Production Engineering Capabilities
+
+This project demonstrates practical engineering experience across:
+
+* distributed backend systems
+* observability engineering
+* scalable async APIs
+* reliability-first infrastructure
+* realtime streaming systems
+* high-concurrency request handling
+* fault-tolerant workflows
+* AI infrastructure engineering
+* distributed tracing and diagnostics
+* platform-oriented backend architecture
 
 ---
 
