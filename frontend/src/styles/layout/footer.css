@@ -1,0 +1,353 @@
+/* =========================================================
+   ENTERPRISERAG AI — PREMIUM FOOTER
+========================================================= */
+
+.footer {
+    width: 100%;
+
+    background:
+        #ffffff;
+
+    border-top:
+        1px solid #e5e7eb;
+
+    margin-top: 120px;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.footer-container {
+    width: 100%;
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    padding:
+        90px 32px 72px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 90px;
+
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.footer-brand {
+    flex: 1;
+
+    min-width: 320px;
+
+    max-width: 560px;
+}
+
+/* =========================================================
+   LOGO ROW
+========================================================= */
+
+.footer-logo-row {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 18px;
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.footer-logo {
+    width: 62px;
+    height: 62px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   BRAND CONTENT
+========================================================= */
+
+.footer-brand-content {
+    width: 100%;
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.footer-brand-title {
+    color: #0f172a;
+
+    font-size: 24px;
+    font-weight: 760;
+
+    letter-spacing: -0.05em;
+
+    line-height: 1.1;
+}
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.footer-brand-description {
+    margin-top: 16px;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    line-height: 1.85;
+
+    max-width: 520px;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.footer-grid {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 72px;
+
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   COLUMN
+========================================================= */
+
+.footer-column {
+    min-width: 170px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+/* =========================================================
+   COLUMN TITLE
+========================================================= */
+
+.footer-column h4 {
+    color: #0f172a;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: -0.02em;
+
+    margin-bottom: 24px;
+}
+
+/* =========================================================
+   LINKS + TEXT
+========================================================= */
+
+.footer-column a,
+.footer-column span {
+    color: #64748b;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    margin-bottom: 14px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.footer-column a:hover {
+    color: #2563eb;
+
+    transform:
+        translateX(2px);
+}
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.footer-bottom {
+    width: 100%;
+
+    border-top:
+        1px solid #e5e7eb;
+
+    padding:
+        24px 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+/* =========================================================
+   TABLETS
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .footer-container {
+        gap: 60px;
+    }
+
+    .footer-grid {
+        gap: 48px;
+    }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .footer {
+        margin-top: 90px;
+    }
+
+    .footer-container {
+        padding:
+            70px 20px 52px;
+
+        flex-direction: column;
+
+        gap: 54px;
+    }
+
+    .footer-brand {
+        min-width: 100%;
+    }
+
+    .footer-logo-row {
+        gap: 16px;
+    }
+
+    .footer-logo {
+        width: 54px;
+        height: 54px;
+    }
+
+    .footer-brand-title {
+        font-size: 21px;
+    }
+
+    .footer-brand-description {
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+    .footer-grid {
+        width: 100%;
+
+        justify-content: space-between;
+
+        gap: 36px;
+    }
+
+    .footer-column {
+        min-width: 140px;
+    }
+
+    .footer-bottom {
+        padding:
+            20px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+}
+
+/* =========================================================
+   SMALL DEVICES
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .footer-container {
+        padding:
+            60px 16px 42px;
+    }
+
+    .footer-logo-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .footer-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .footer-brand-title {
+        font-size: 19px;
+    }
+
+    .footer-brand-description {
+        margin-top: 14px;
+
+        font-size: 13px;
+    }
+
+    .footer-grid {
+        flex-direction: column;
+
+        gap: 30px;
+    }
+
+    .footer-column {
+        width: 100%;
+    }
+
+    .footer-column h4 {
+        margin-bottom: 18px;
+    }
+
+    .footer-bottom {
+        padding:
+            18px 16px;
+
+        font-size: 12px;
+    }
+
+}

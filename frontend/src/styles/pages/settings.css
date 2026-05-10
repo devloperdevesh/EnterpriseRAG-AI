@@ -1,0 +1,76 @@
+.settings-page {
+    padding: 32px;
+    color: white;
+}
+
+.settings-header {
+    margin-bottom: 32px;
+}
+
+.settings-header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.settings-header p {
+    color: #94a3b8;
+}
+
+.settings-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.settings-card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 18px;
+    padding: 24px;
+}
+
+.settings-card-header {
+    margin-bottom: 20px;
+}
+
+.settings-card-header h2 {
+    font-size: 22px;
+}
+
+.settings-card-header span {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-top: 1px solid #1f2937;
+}
+
+.settings-item h3 {
+    margin-bottom: 6px;
+}
+
+.settings-item p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.status {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status.enabled {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+.status.healthy {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+}

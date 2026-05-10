@@ -1,13 +1,21 @@
+import { Outlet } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Outlet } from "react-router-dom";
 
 export default function PublicLayout() {
   return (
-    <>
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Navbar */}
       <Navbar />
-      <Outlet />
+
+      {/* Page Content */}
+      <main>
+        <Outlet />
+      </main>
+
+      {/* Footer */}
       <Footer />
-    </>
+    </div>
   );
 }

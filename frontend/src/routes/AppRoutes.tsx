@@ -1,43 +1,65 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-/* PUBLIC PAGES */
-import Home from "../marketing/pages/Home";
-import Features from "../marketing/pages/Features";
-import Pricing from "../marketing/pages/Pricing";
-import About from "../marketing/pages/About";
+/* =========================================================
+   LANDING
+========================================================= */
 
-/* APP PAGES */
+import Landing from "../pages/Landing";
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+import Login from "../auth/Login";
+import Signup from "../auth/Signup";
+
+/* =========================================================
+   APPLICATION PAGES
+========================================================= */
+
 import Dashboard from "../pages/Dashboard";
+
 import Chat from "../app/pages/Chat";
 import Documents from "../app/pages/Documents";
+import Analytics from "../app/pages/Analytics";
+import Settings from "../app/pages/Settings";
 
-/* LAYOUTS */
-import PublicLayout from "../marketing/layout/PublicLayout";
+/* =========================================================
+   LAYOUT
+========================================================= */
+
 import AppLayout from "../app/layout/AppLayout";
 
-function AppRoutes() {
+export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* =========================================================
+            PUBLIC ROUTES
+        ========================================================= */}
 
-        {/* PUBLIC ROUTES */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/features" element={<Features />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/about" element={<About />} />
-        </Route>
+        <Route path="/" element={<Landing />} />
 
-        {/* APP ROUTES */}
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/signup" element={<Signup />} />
+
+        {/* =========================================================
+            APPLICATION ROUTES
+        ========================================================= */}
+
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/documents" element={<Documents />} />
-        </Route>
 
+          <Route path="/chat" element={<Chat />} />
+
+          <Route path="/documents" element={<Documents />} />
+
+          <Route path="/analytics" element={<Analytics />} />
+
+          <Route path="/settings" element={<Settings />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default AppRoutes;

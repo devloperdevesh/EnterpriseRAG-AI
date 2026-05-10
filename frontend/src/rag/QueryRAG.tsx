@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/pages/chat.css";
+import "../styles/pages/chat.css";
 
 
 export default function QueryRAG() {

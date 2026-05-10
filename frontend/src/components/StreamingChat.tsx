@@ -21,3 +21,10 @@ export default function StreamingChat() {
     </div>
   );
 }
+useEffect(() => {
+  const eventSource = new EventSource("http://localhost:8000/stream");
+
+  eventSource.onmessage = (event) => {
+    console.log(event.data);
+  };
+}, []);

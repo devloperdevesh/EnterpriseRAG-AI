@@ -1,47 +1,105 @@
-import { LineChart, Line, XAxis, YAxis } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 
-const data = [
-  { name: "Day1", queries: 400 },
-  { name: "Day2", queries: 800 },
+const chartData = [
+  { name: "Mon", queries: 320 },
+  { name: "Tue", queries: 540 },
+  { name: "Wed", queries: 780 },
+  { name: "Thu", queries: 620 },
+  { name: "Fri", queries: 910 },
+  { name: "Sat", queries: 1040 },
+  { name: "Sun", queries: 860 },
 ];
 
 export default function Analytics() {
-  return (
-    <LineChart width={400} height={200} data={data}>
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Line type="monotone" dataKey="queries" />
-    </LineChart>
-  );
-}
-export default function Analytics() {
-  const stats = {
-    users: 842,
-    requests: 12450,
-    latency: "480ms",
-  };
+  const stats = [
+    {
+      title: "Active Users",
+      value: "842",
+    },
+    {
+      title: "Requests",
+      value: "12,450",
+    },
+    {
+      title: "p95 Latency",
+      value: "480ms",
+    },
+    {
+      title: "Error Rate",
+      value: "<1%",
+    },
+  ];
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold">System Metrics</h2>
+    <div className="w-full min-h-screen bg-black text-white p-8">
+      {/* Header */}
+      <div className="mb-12">
+        <p className="uppercase tracking-[0.3em] text-sm text-neutral-500 mb-4">
+          Observability Dashboard
+        </p>
 
-      <div className="grid grid-cols-3 gap-6 mt-4">
+        <h1 className="text-5xl font-bold">System Analytics</h1>
 
-        <div className="glass p-4">
-          <p>Active Users</p>
-          <h3 className="text-2xl">{stats.users}</h3>
+        <p className="text-neutral-400 mt-4 max-w-2xl leading-relaxed">
+          Realtime infrastructure metrics, throughput monitoring, latency
+          visualization, and distributed system observability.
+        </p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
+        {stats.map((item, index) => (
+          <div
+            key={index}
+            className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6"
+          >
+            <p className="text-sm uppercase tracking-wider text-neutral-500 mb-3">
+              {item.title}
+            </p>
+
+            <h2 className="text-4xl font-bold">{item.value}</h2>
+          </div>
+        ))}
+      </div>
+
+      {/* Chart */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8">
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold">Request Throughput</h2>
+
+          <p className="text-neutral-400 mt-2">
+            Weekly request volume across the distributed inference pipeline.
+          </p>
         </div>
 
-        <div className="glass p-4">
-          <p>Requests</p>
-          <h3 className="text-2xl">{stats.requests}</h3>
-        </div>
+        <div className="w-full h-[350px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid stroke="#262626" />
 
-        <div className="glass p-4">
-          <p>Latency</p>
-          <h3 className="text-2xl">{stats.latency}</h3>
-        </div>
+              <XAxis dataKey="name" stroke="#737373" />
 
+              <YAxis stroke="#737373" />
+
+              <Tooltip />
+
+              <Line
+                type="monotone"
+                dataKey="queries"
+                stroke="#ffffff"
+                strokeWidth={3}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,316 @@
+/* =========================================================
+   ENTERPRISERAG AI — RESPONSIVE NAVBAR
+   Production-grade clean infrastructure UI
+========================================================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background: #ffffff;
+
+    border-bottom:
+        1px solid #e5e7eb;
+
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.navbar-container {
+    width: 100%;
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    height: 74px;
+
+    padding: 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+
+    text-decoration: none;
+}
+
+.logo-image {
+    width: 44px;
+    height: 44px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+.logo-title {
+    color: #0f172a;
+
+    font-size: 16px;
+    font-weight: 750;
+
+    letter-spacing: -0.04em;
+
+    white-space: nowrap;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 32px;
+
+    flex: 1;
+}
+
+.navbar-links a {
+    position: relative;
+
+    color: #475569;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease;
+}
+
+.navbar-links a:hover {
+    color: #0f172a;
+}
+
+/* =========================================================
+   UNDERLINE
+========================================================= */
+
+.navbar-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -8px;
+
+    width: 0%;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: #2563eb;
+
+    transition:
+        width 0.25s ease;
+}
+
+.navbar-links a:hover::after {
+    width: 100%;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-link {
+    color: #475569;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease;
+}
+
+.login-link:hover {
+    color: #0f172a;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.signup-btn,
+.logout-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        11px 18px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.signup-btn:hover,
+.logout-btn:hover {
+    background: #1d4ed8;
+
+    transform:
+        translateY(-1px);
+}
+
+/* =========================================================
+   LARGE TABLETS
+========================================================= */
+
+@media (max-width: 1024px) {
+
+    .navbar-container {
+        padding: 0 24px;
+    }
+
+    .navbar-links {
+        gap: 24px;
+    }
+
+}
+
+/* =========================================================
+   TABLETS
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .navbar-container {
+        height: 68px;
+
+        padding: 0 18px;
+    }
+
+    .navbar-links {
+        display: none;
+    }
+
+    .logo-image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-title {
+        font-size: 15px;
+    }
+
+    .signup-btn,
+    .logout-btn {
+        padding:
+            10px 14px;
+
+        font-size: 13px;
+    }
+
+}
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .navbar-container {
+        padding: 0 14px;
+
+        gap: 12px;
+    }
+
+    .logo-image {
+        width: 36px;
+        height: 36px;
+    }
+
+    .logo-title {
+        font-size: 14px;
+    }
+
+    .login-link {
+        display: none;
+    }
+
+    .signup-btn,
+    .logout-btn {
+        padding:
+            9px 12px;
+
+        border-radius: 12px;
+
+        font-size: 12px;
+    }
+
+}
+
+/* =========================================================
+   EXTRA SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .logo-title {
+        display: none;
+    }
+
+    .signup-btn,
+    .logout-btn {
+        padding:
+            8px 10px;
+    }
+
+}

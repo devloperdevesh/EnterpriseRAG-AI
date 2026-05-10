@@ -1,27 +1,38 @@
 import { useState } from "react";
+
+import { Link } from "react-router-dom";
+
 import { api } from "../api/client";
 
-export default function Signup({ onBack }: { onBack: () => void }) {
+import "../styles/pages/auth.css";
+
+export default function Signup() {
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
+
   const [tenantId, setTenantId] = useState("");
+
   const [message, setMessage] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const submit = async () => {
     if (!email || !password || !tenantId) {
       setMessage("All fields are required");
+
       return;
     }
 
     setLoading(true);
+
     setMessage("");
 
     try {
       const res = await api.post("/auth/signup", {
         email,
         password,
-        tenant_id: tenantId.trim(), //Required by backend
+        tenant_id: tenantId.trim(),
         role: "user",
       });
 
@@ -39,82 +50,62 @@ export default function Signup({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div style={styles.card}>
-      <h2>Create Account</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        {/* =========================
+            LOGO
+        ========================= */}
+        <img src="/favicon.png" alt="EnterpriseRAG AI" className="auth-logo" />
 
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={styles.input}
-      />
+        {/* =========================
+            TITLE
+        ========================= */}
+        <h1 className="auth-title">Create Workspace</h1>
 
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={styles.input}
-      />
+        <p className="auth-subtitle">
+          Provision tenant-scoped infrastructure access
+        </p>
 
-      <input
-        placeholder="Tenant / Workspace ID (e.g. tenant1)"
-        value={tenantId}
-        onChange={(e) => setTenantId(e.target.value)}
-        style={styles.input}
-      />
+        {/* =========================
+            FORM
+        ========================= */}
+        <div className="auth-form">
+          <input
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-      <button
-        onClick={submit}
-        style={{
-          ...styles.button,
-          opacity: loading ? 0.6 : 1,
-        }}
-        disabled={loading}
-      >
-        {loading ? "Creating..." : "Sign Up"}
-      </button>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-      <p style={{ marginTop: 15 }}>
-        <span style={styles.link} onClick={onBack}>
-          Back to Login
-        </span>
-      </p>
+          <input
+            type="text"
+            placeholder="Workspace ID"
+            value={tenantId}
+            onChange={(e) => setTenantId(e.target.value)}
+          />
 
-      {message && <p>{message}</p>}
+          {message && <p className="auth-message">{message}</p>}
+
+          <button onClick={submit} disabled={loading} className="auth-button">
+            {loading ? "Provisioning..." : "Create Account"}
+          </button>
+        </div>
+
+        {/* =========================
+            FOOTER
+        ========================= */}
+        <p className="auth-footer">
+          Already have access?
+          <Link to="/login">Sign in</Link>
+        </p>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  card: {
-    width: 420,
-    margin: "120px auto",
-    padding: 32,
-    borderRadius: 16,
-    background: "#ffffff",
-    boxShadow: "0 15px 60px rgba(0,0,0,0.12)",
-    textAlign: "center" as const,
-  },
-  input: {
-    width: "100%",
-    padding: 12,
-    marginBottom: 14,
-    borderRadius: 8,
-    border: "1px solid #ddd",
-  },
-  button: {
-    width: "100%",
-    padding: 12,
-    borderRadius: 10,
-    border: "none",
-    background: "linear-gradient(90deg,#8A2BE2,#007BFF)",
-    color: "white",
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-  link: {
-    color: "#007BFF",
-    cursor: "pointer",
-  },
-};

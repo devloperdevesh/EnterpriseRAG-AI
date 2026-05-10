@@ -1,0 +1,251 @@
+/* =========================================================
+   CTA SECTION
+========================================================= */
+
+.cta-section {
+    padding:
+        140px 24px;
+
+    background:
+        linear-gradient(to bottom,
+            #ffffff,
+            #f8fbff);
+
+    border-top:
+        1px solid #e5e7eb;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.cta-container {
+    max-width: 980px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+.cta-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        10px 16px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(37, 99, 235, 0.08);
+
+    border:
+        1px solid rgba(37, 99, 235, 0.14);
+
+    color: #2563eb;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.cta-title {
+    margin-top: 28px;
+
+    color: #0f172a;
+
+    font-size: 64px;
+    font-weight: 760;
+
+    line-height: 1.03;
+
+    letter-spacing: -0.06em;
+}
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.cta-description {
+    max-width: 760px;
+
+    margin:
+        28px auto 0;
+
+    color: #64748b;
+
+    font-size: 20px;
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.cta-actions {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 44px;
+
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.primary-cta-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        14px 24px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(135deg,
+            #2563eb,
+            #1d4ed8);
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    box-shadow:
+        0 16px 34px rgba(37, 99, 235, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.primary-cta-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 22px 40px rgba(37, 99, 235, 0.24);
+}
+
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
+
+.secondary-cta-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        14px 24px;
+
+    border-radius: 18px;
+
+    border:
+        1px solid #dbe4f0;
+
+    background: white;
+
+    color: #0f172a;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.secondary-cta-btn:hover {
+    background: #f8fafc;
+
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+.cta-metrics {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 34px;
+
+    margin-top: 72px;
+
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   METRIC
+========================================================= */
+
+.cta-metric {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.cta-metric-value {
+    color: #0f172a;
+
+    font-size: 28px;
+    font-weight: 760;
+
+    letter-spacing: -0.05em;
+}
+
+.cta-metric-label {
+    margin-top: 10px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .cta-title {
+        font-size: 44px;
+    }
+
+    .cta-description {
+        font-size: 17px;
+    }
+
+    .cta-actions {
+        flex-direction: column;
+    }
+
+}

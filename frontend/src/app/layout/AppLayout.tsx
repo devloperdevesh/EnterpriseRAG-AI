@@ -1,21 +1,22 @@
+import { Outlet } from "react-router-dom";
+
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
-import { Outlet } from "react-router-dom";
 
 export default function AppLayout() {
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      
+    <div className="flex h-screen bg-black text-white">
+      {/* Sidebar */}
       <Sidebar />
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 overflow-hidden">
         <Topbar />
 
-        <div className="main-content">
+        <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
-        </div>
+        </main>
       </div>
-
     </div>
   );
 }
