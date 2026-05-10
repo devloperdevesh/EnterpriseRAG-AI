@@ -1,265 +1,418 @@
-<p align="center">
-  <img src="./banner.png" alt="EnterpriseRAG AI Banner" />
-</p>
+# EnterpriseRAG AI
 
-<p align="center">
-  <b>High-concurrency distributed RAG system handling ~850 req/sec with sub-500ms latency.</b>
-</p>
-
-<p align="center">
-  850+ req/sec • 480ms p95 • 40% latency reduction
-</p>
-
-<p align="center">
-  FastAPI • Redis • Kafka • PostgreSQL • AWS • Observability
-</p>
-
-<p align="center">
-  <a href="https://enterpriserag-ai.vercel.app/">
-    <img src="https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge" />
-  </a>
-
-</p>
+## Production-Grade Distributed RAG Infrastructure for High-Concurrency AI Systems
 
 ---
 
-A production-oriented, multi-tenant backend system for large-scale document intelligence using Retrieval-Augmented Generation (RAG). Designed for high concurrency, low latency, and predictable behavior under load.
+## Executive Summary
 
----
-
-## Highlights
-
-* High-throughput system handling ~850 req/sec  
-* Sub-500ms latency under sustained load  
-* ~40% latency optimization through system design  
-* Fault-tolerant architecture with <1% error rate  
-* Multi-tenant SaaS-ready backend design  
-
----
-
-## Table of Contents
-
-* Overview
-* Problem
-* Approach
-* Architecture
-* Core Components
-* Performance & Load Testing
-* Engineering Highlights
-* Tech Stack
-* Deployment
-* API Overview
-* Design Decisions
-* Future Work
-* What This Demonstrates
-
----
-
-## Overview
-
-EnterpriseRAG AI is a distributed, multi-tenant backend designed to process and query large document corpora using semantic retrieval and LLM-based generation. The system prioritizes correctness, latency, and reliability in real-world workloads.
-
----
-
-## Problem
-
-Traditional document systems break at scale due to:
-
-* Keyword-based retrieval (poor semantic understanding)
-* Hallucinated responses without grounding
-* High latency under concurrent traffic
-* Lack of tenant isolation in SaaS scenarios
-
----
-
-## Approach
+EnterpriseRAG AI is a production-oriented distributed Retrieval-Augmented Generation (RAG) platform engineered for high-concurrency AI workloads and observability-first infrastructure engineering.
 
 The system combines:
 
-* Vector-based semantic retrieval (FAISS)
-* Retrieval-Augmented Generation (RAG)
-* Async API layer for concurrency
-* Tenant-aware data isolation
+* asynchronous API execution
+* distributed tracing
+* realtime streaming
+* semantic retrieval
+* queue-based workload isolation
+* reliability-first backend engineering
+* multi-tenant request isolation
+* infrastructure observability
 
-This enables context-aware responses with stable performance under load.
+The architecture prioritizes:
+
+* predictable latency
+* operational visibility
+* fault tolerance
+* horizontal scalability
+* streaming-aware inference delivery
+* infrastructure diagnostics under sustained load
 
 ---
 
-## Architecture
+# System Highlights
+
+| Capability    | Result                         |
+| ------------- | ------------------------------ |
+| Throughput    | ~850 requests/sec              |
+| p95 Latency   | ~480ms                         |
+| Error Rate    | <1%                            |
+| Architecture  | Async-first distributed design |
+| Reliability   | Retry + replay workflows       |
+| Streaming     | SSE/WebSocket support          |
+| Observability | Metrics + tracing + logging    |
+| Isolation     | Multi-tenant request handling  |
+
+---
+
+# High-Level Architecture
 
 ```text
-Client
-  ↓
-CDN / Edge
-  ↓
-Load Balancer
-  ↓
-FastAPI (Async API Layer)
-  ↓
-Redis (Caching - planned)
-  ↓
-FAISS (Vector Retrieval)
-  ↓
-LLM (Response Generation)
-  ↓
-PostgreSQL (Metadata / Tenancy)
+Client Applications
+        ↓
+CDN / Edge Layer
+        ↓
+NGINX Gateway
+        ↓
+FastAPI Async API Layer
+        ↓
+Redis Cache / Queue
+        ↓
+FAISS Vector Retrieval
+        ↓
+LLM Inference Layer
+        ↓
+PostgreSQL Metadata Layer
 ```
 
 ---
 
-##  Query Execution Flow
+# End-to-End Request Lifecycle
 
-1. Documents are ingested and chunked  
-2. Embeddings are generated and stored in FAISS  
-3. User query is embedded  
-4. Top-K relevant chunks retrieved  
-5. Context passed to LLM for grounded response  
-
-## Core Components
-
-### API Layer
-
-* Async FastAPI services (non-blocking)
-* Stateless design for horizontal scaling
-
-### Retrieval System
-
-* Document chunking
-* Embedding generation (transformers)
-* Top-K semantic retrieval via FAISS
-
-### Generation Layer
-
-* Context injection into LLM
-* Grounded response generation
-
-### Data Layer
-
-* PostgreSQL for relational metadata and tenancy
-* FAISS for vector indexing
+```text
+1. User submits query
+2. Query enters async API layer
+3. Tenant context validated
+4. Request tracing initialized
+5. Query embedding generated
+6. Top-K semantic retrieval executed
+7. Context passed to LLM
+8. Streaming response generated
+9. Metrics and logs persisted
+10. Trace exported to Jaeger
+```
 
 ---
 
-## Performance & Load Testing
+# Distributed Tracing
 
-* Tool: k6
-* Duration: 10 minutes sustained traffic
+The platform integrates OpenTelemetry-based distributed tracing to visualize request propagation and identify latency bottlenecks during sustained concurrent traffic.
 
-| Metric      | Value        |
-| ----------- | ------------ |
-| Throughput  | ~850 req/sec |
-| p95 Latency | ~480 ms      |
-| p99 Latency | ~720 ms      |
-| Error Rate  | <1%          |
+Tracing spans provide visibility into:
 
-Results show stable performance under high concurrency.
+* API request execution
+* Redis cache interactions
+* semantic retrieval latency
+* vector search timing
+* database query duration
+* streaming response flow
+* retry workflows
+* fallback execution paths
+
+Jaeger was integrated for realtime trace visualization and latency diagnostics across infrastructure layers.
+
+## Trace Flow
+
+```text
+Client Request
+      ↓
+FastAPI API Layer
+      ↓
+Redis Cache
+      ↓
+FAISS Retrieval
+      ↓
+LLM Inference
+      ↓
+Metrics Export
+      ↓
+Jaeger Trace Visualization
+```
+
+## Trace Visualization
+
+Add Jaeger trace screenshot here.
+
+Recommended screenshot:
+
+* request timeline spans
+* service propagation flow
+* latency distribution
+* retrieval timing breakdown
 
 ---
 
-## Engineering Highlights
+# Metrics & Observability Dashboard
 
-| Area            | Implementation                          |
-| --------------- | --------------------------------------- |
-| Concurrency     | Async request handling (FastAPI)        |
-| Scalability     | Stateless services + horizontal scaling |
-| Latency         | ~40% reduction via optimized flow       |
-| Fault Tolerance | Retries, timeouts, circuit breakers     |
-| Traffic Control | Rate limiting + backpressure            |
-| Reliability     | Stable under traffic spikes             |
+Grafana dashboards were configured for realtime infrastructure monitoring and observability-driven diagnostics.
+
+## Key Metrics Tracked
+
+* requests/sec
+* p95 latency
+* p99 latency
+* queue depth
+* active requests
+* failure rate
+* retry frequency
+* streaming throughput
+* tenant-level request metrics
+
+## Monitoring Stack
+
+| Component     | Purpose                 |
+| ------------- | ----------------------- |
+| Prometheus    | Metrics aggregation     |
+| Grafana       | Dashboard visualization |
+| OpenTelemetry | Distributed tracing     |
+| Jaeger        | Trace inspection        |
+| Redis         | Queue monitoring        |
+
+## Dashboard Visualization
+
+Add Grafana dashboard screenshot here.
+
+Recommended dashboard panels:
+
+* p95 latency
+* requests/sec
+* error rate
+* queue depth
+* active requests
+* trace throughput
 
 ---
 
-## Tech Stack
+# OpenTelemetry Request Flow
 
-### Backend
+```text
+Request
+   ↓
+Trace Context Initialization
+   ↓
+FastAPI Async API Layer
+   ↓
+Redis Cache / Queue
+   ↓
+Semantic Retrieval Pipeline
+   ↓
+LLM Inference Layer
+   ↓
+Metrics Export
+   ↓
+Prometheus Aggregation
+   ↓
+Grafana Visualization
+   ↓
+Jaeger Trace Inspection
+```
+
+The tracing pipeline enabled realtime request diagnostics, distributed latency analysis, and infrastructure-wide request lifecycle visibility.
+
+---
+
+# Scaling Bottlenecks Observed
+
+During sustained concurrent traffic simulations, PostgreSQL connection contention emerged as a primary bottleneck due to excessive parallel retrieval metadata queries.
+
+Latency spikes were observed when synchronous retrieval paths amplified repeated database access under concurrent AI inference workloads.
+
+Several optimizations were introduced to stabilize latency behavior:
+
+* Redis caching for repeated retrieval paths
+* queue isolation for asynchronous workloads
+* reduced synchronous blocking operations
+* async-first request execution
+* optimized retrieval lifecycle instrumentation
+* streaming-aware workload handling
+
+These improvements reduced repeated database pressure and significantly improved tail-latency consistency during concurrency spikes.
+
+## Engineering Insight
+
+The bottleneck analysis demonstrated that observability tooling and distributed tracing were critical for identifying hidden latency amplification patterns inside retrieval-heavy AI workloads.
+
+---
+
+# Reliability & Failure Handling
+
+```text
+Request Failure
+      ↓
+Failure Capture
+      ↓
+Structured Error Logging
+      ↓
+Replay Queue Persistence
+      ↓
+Retry Workflow
+      ↓
+Fallback / Graceful Degradation
+```
+
+Key reliability mechanisms:
+
+* failure replay system
+* retry orchestration
+* timeout handling
+* circuit breaker isolation
+* queue overflow protection
+* graceful degradation workflows
+* replay persistence
+* structured error diagnostics
+
+---
+
+# Realtime Streaming Infrastructure
+
+```text
+LLM Token Generation
+        ↓
+Streaming Layer
+        ↓
+SSE/WebSocket Channel
+        ↓
+Frontend Realtime Rendering
+```
+
+Supported capabilities:
+
+* live token streaming
+* realtime event feeds
+* streaming-aware observability
+* request progress tracking
+* streaming lifecycle diagnostics
+
+---
+
+# Performance Engineering & Load Testing
+
+Load testing was performed using Locust and k6 under sustained concurrent inference traffic.
+
+## Metrics Observed
+
+| Metric          | Result       |
+| --------------- | ------------ |
+| Throughput      | ~850 req/sec |
+| p95 Latency     | ~480ms       |
+| p99 Latency     | ~720ms       |
+| Error Rate      | <1%          |
+| Concurrent Load | Sustained    |
+
+## Validation Areas
+
+* async request scalability
+* queue stability
+* retry workflow behavior
+* tracing visibility
+* realtime streaming stability
+* observability diagnostics
+* latency consistency
+
+## Load Testing Evidence
+
+Add screenshots here:
+
+* Locust dashboard
+* k6 execution graphs
+* RPS vs latency charts
+* failure-rate visualization
+
+---
+
+# Technology Stack
+
+## Backend
 
 * FastAPI
 * PostgreSQL
 * SQLAlchemy
+* Redis
 * FAISS
+* Celery
 
-### AI Layer
+## AI Layer
 
 * Sentence Transformers
+* Retrieval-Augmented Generation
+* Semantic Retrieval Pipelines
 * LLM APIs
 
-### Frontend
+## Frontend
 
 * React
 * TypeScript
+* Recharts
 
-### Infrastructure
+## Observability
 
-* AWS (EC2, S3, IAM — production-style deployment)
-* Railway (current hosting)
-* Vercel (frontend)
-* Docker (containerization-ready)
+* OpenTelemetry
+* Jaeger
+* Prometheus
+* Grafana
 
----
+## Infrastructure
 
-## Deployment
-
-* Backend deployed on cloud infrastructure (AWS EC2 / Railway)
-* Frontend hosted on Vercel
-* Designed for container-based deployment (Docker)
-
----
-
-## API Overview
-
-### Upload Document
-
-* Stores and processes documents
-
-### Query Endpoint
-
-* Accepts user query
-* Retrieves top-K relevant chunks
-* Generates grounded response
-
-### Auth
-
-* JWT-based authentication
-* Tenant-scoped access
+* Docker
+* Kubernetes-ready deployment
+* Railway
+* Vercel
+* NGINX Gateway
 
 ---
 
-## Design Decisions
+# Distributed Systems Engineering
 
-* Async-first architecture → maximize throughput
-* Stateless services → enable horizontal scaling
-* Decoupled components → maintainability and extensibility
-* RAG over pure LLM → improved correctness and reduced hallucination
-
----
-
-## Trade-offs
-
-- Vector search improves semantic accuracy but adds memory overhead  
-- Async architecture improves throughput but increases debugging complexity  
-- Multi-tenant isolation improves security but adds schema and query overhead
-  
-
-## Future Work
-
-* Redis caching layer
-* Observability (metrics, logs, tracing)
-* Hybrid search (keyword + vector)
-* Streaming responses (WebSockets)
-* Kubernetes-based deployment
+| Area            | Implementation               |
+| --------------- | ---------------------------- |
+| Concurrency     | Async FastAPI                |
+| Queueing        | Redis Queue                  |
+| Streaming       | SSE/WebSockets               |
+| Reliability     | Retry + replay workflows     |
+| Isolation       | Multi-tenant architecture    |
+| Traffic Control | Rate limiting + backpressure |
+| Observability   | Metrics + tracing + logging  |
+| Scaling         | Horizontal scaling ready     |
 
 ---
 
-## What This Demonstrates
+# Engineering Trade-offs & Design Decisions
 
-* Real-world distributed systems design
-* High-concurrency backend engineering
-* Low-latency system optimization
-* Trade-off awareness (latency vs cost vs accuracy)
+| Decision                 | Benefit                     | Trade-off                      |
+| ------------------------ | --------------------------- | ------------------------------ |
+| Async-first architecture | High concurrency            | Increased debugging complexity |
+| Streaming responses      | Better UX                   | Stateful connection handling   |
+| Vector retrieval         | Improved semantic grounding | Higher memory usage            |
+| Distributed tracing      | Better diagnostics          | Additional infra complexity    |
+| Tenant isolation         | Improved security           | Additional query overhead      |
 
 ---
 
-## Author
+# Engineering Areas Demonstrated
 
-Devesh Chauhan
-Backend Systems Engineer — Distributed Systems — AI Infrastructure
+* distributed systems engineering
+* high-concurrency backend architecture
+* observability-first system design
+* reliability engineering
+* distributed tracing workflows
+* infrastructure diagnostics
+* streaming AI systems
+* async API engineering
+* failure replay workflows
+* queue-oriented architecture
+* AI infrastructure engineering
+
+---
+
+# Production Engineering Capabilities
+
+This project demonstrates practical engineering experience across:
+
+* distributed backend systems
+* observability engineering
+* scalable async APIs
+* infrastructure diagnostics
+* realtime streaming systems
+* tracing and metrics pipelines
+* fault-tolerant workflows
+* low-latency optimization
+* multi-tenant infrastructure
+* platform-oriented backend engineering
+
+---
+
+# Author
+
+## Devesh Chauhan
+
+Backend Systems Engineering • Distributed Systems • AI Infrastructure
