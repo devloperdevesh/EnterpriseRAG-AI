@@ -1,65 +1,25 @@
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.core.config import settings
-from app.core.dependencies import get_current_user
-
-from app.api.v1.auth import router as auth_router
-from app.api.v1.tenants import router as tenants_router
-from app.api.v1.document import router as document_router
-from app.api.v1.rag import router as rag_router
-from fastapi import FastAPI
 from prometheus_client import generate_latest
 from starlette.responses import Response
-from core.middleware import MetricsMiddleware
-from core.middleware_logging import LoggingMiddleware
-from core.rate_limit import init_redis
-from fastapi import Depends, HTTPException
-from core.dependencies import get_current_user
 
-@app.get("/metrics")
-def metrics(user=Depends(get_current_user)):
-    if user.get("sub") != "admin":
-        raise HTTPException(status_code=403, detail="Not allowed")
-
-    return Response(generate_latest(), media_type="text/plain")
-
-
-
-@app.on_event("startup")
-async def startup():
-    await init_redis()
-
-
-app.add_middleware(LoggingMiddleware)
-
-
-app = FastAPI()
-
-app.add_middleware(MetricsMiddleware)
-
-@app.get("/metrics")
-def metrics():
-    return Response(generate_latest(), media_type="text/plain")
-
-
+from app.api.routes.auth import router as auth_router
+from app.api.routes.document import router as document_router
+from app.api.routes.rag import router as rag_router
+from app.api.routes.tenants import router as tenants_router
+from app.core.config import settings
+from app.core.dependencies import get_current_user
+from app.core.handlers import register_exception_handlers
+from app.core.logger import setup_logging
 from app.db.init_db import init_db
 
-# ===============================
-# Create FastAPI App
-# ===============================
+
+setup_logging()
+
 app = FastAPI(title=settings.APP_NAME)
 
-# ===============================
-# Initialize DB
-# ===============================
-@app.on_event("startup")
-def startup_event():
-    init_db()
+register_exception_handlers(app)
 
-# ===============================
-# CORS (FINAL & CORRECT)
-# ===============================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -72,24 +32,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ===============================
-# Routers
-# ===============================
+
+@app.on_event("startup")
+def startup_event():
+    init_db()
+
+
 app.include_router(auth_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
 
-# ===============================
-# Health Routes
-# ===============================
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type="text/plain")
+
+
 @app.get("/")
 def root():
     return {"message": "EnterpriseRAG backend running"}
 
+
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
 
 @app.get("/protected")
 def protected(user=Depends(get_current_user)):
@@ -97,7 +65,3 @@ def protected(user=Depends(get_current_user)):
         "message": "You are authenticated",
         "user": user,
     }
-
-from core.tracing import setup_tracing
-
-setup_tracing()
