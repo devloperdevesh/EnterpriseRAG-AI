@@ -9,6 +9,7 @@ from app.rag.vector_store import search_embedding
 from app.rag.llm import generate_answer
 from opentelemetry import trace
 
+router = APIRouter(prefix="/rag", tags=["rag"])
 tracer = trace.get_tracer(__name__)
 
 @router.post("/query")
@@ -23,8 +24,6 @@ async def query():
             pass
 
         return {"ok": True}
-
-router = APIRouter(prefix="/rag", tags=["rag"])
 
 
 class RAGQuery(BaseModel):
