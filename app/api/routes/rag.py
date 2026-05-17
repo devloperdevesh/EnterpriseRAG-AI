@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-
+from opentelemetry.propagate import inject
+from app.workers.celery_worker import process_document
 import asyncio
 
 from opentelemetry import trace
@@ -38,6 +39,15 @@ async def query():
 
         with tracer.start_as_current_span("llm-call"):
             pass
+
+        trace_headers = {}
+
+        inject(trace_headers)
+
+        process_document.apply_async(
+            args=["sample-doc-id"],
+            headers=trace_headers
+        )
 
         return {"ok": True}
 
@@ -85,8 +95,19 @@ async def stream_query(
 
                 # Stream tokens
                 for word in answer.split():
-                    yield word + " "
-                    await asyncio.sleep(0.015)
+
+                    with tracer.start_as_current_span(
+                        "stream-token"
+                    ) as span:
+
+                        span.set_attribute(
+                            "token.value",
+                            word
+                        )
+
+                        yield word + " "
+
+                        await asyncio.sleep(0.015)
 
         return StreamingResponse(
             event_stream(),

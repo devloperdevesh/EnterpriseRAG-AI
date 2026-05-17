@@ -31,3 +31,7 @@ fastapi-limiter
 opentelemetry-api
 opentelemetry-sdk
 opentelemetry-exporter-jaeger
+
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-celery
+
