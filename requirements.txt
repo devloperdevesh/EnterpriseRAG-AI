@@ -23,3 +23,11 @@ pydantic[email]
 
 passlib==1.7.4
 bcrypt==3.2.2
+
+celery
+prometheus-client
+fastapi-limiter
+
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-jaeger
