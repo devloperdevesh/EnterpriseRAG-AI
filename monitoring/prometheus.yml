@@ -1,15 +1,12 @@
-version: "3.8"
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
-services:
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
 
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
+  - job_name: 'celery_worker'
+    static_configs:
+      - targets: ['celery_worker:8001']
