@@ -2,15 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
 from fastapi import APIRouter
-from core.security import create_access_token
+from app.core.security import create_access_token
 from fastapi import Depends
-from core.rate_limit import limiter
-
+from app.reliability.rate_limit import limiter
+router = APIRouter()
 @router.get("/rag-query", dependencies=[Depends(limiter(5, 60))])
 def rag_query():
     return {"msg": "Rate limited endpoint"}
 
-router = APIRouter()
+
 
 @router.post("/login")
 def login():
@@ -22,7 +22,7 @@ def login():
     return {"access_token": token, "token_type": "bearer"}
 
 from fastapi import Depends
-from core.dependencies import get_current_user
+from app.core.dependencies import get_current_user
 
 @router.get("/secure")
 def secure_route(user=Depends(get_current_user)):

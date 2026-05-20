@@ -17,7 +17,10 @@ UPLOAD_DIR = "uploaded_docs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-def process_document(filepath: str):
+def process_document(
+    filepath: str,
+    tenant_id: str
+):
     # ---- Read PDF ----
     reader = PyPDF2.PdfReader(filepath)
     full_text = ""
@@ -32,7 +35,11 @@ def process_document(filepath: str):
     # ---- Generate embeddings & store ----
     for chunk in chunks:
         emb = generate_embedding(chunk)
-        add_embedding(emb, chunk)
+        add_embedding(
+            emb,
+            chunk,
+            tenant_id
+        )
 
     print("✅ Document embedded successfully")
 
@@ -60,6 +67,10 @@ def upload_document(
     db.commit()
 
     # ---- Run embedding in background ----
-    background_tasks.add_task(process_document, save_path)
+    background_tasks.add_task(
+    process_document,
+    save_path,
+    current_user["tenant_id"]
+)
 
     return {"status": "uploaded"}

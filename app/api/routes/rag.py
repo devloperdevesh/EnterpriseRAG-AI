@@ -10,6 +10,7 @@ from app.rag.llm import generate_answer
 from opentelemetry import trace
 
 tracer = trace.get_tracer(__name__)
+router = APIRouter(prefix="/rag", tags=["rag"])
 
 @router.post("/query")
 async def query():
@@ -24,7 +25,7 @@ async def query():
 
         return {"ok": True}
 
-router = APIRouter(prefix="/rag", tags=["rag"])
+
 
 
 class RAGQuery(BaseModel):
@@ -39,7 +40,10 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
     query_emb = generate_embedding(question)
 
     # Search vector DB
-    results = search_embedding(query_emb)
+    results = search_embedding(
+    query_emb,
+    current_user["tenant_id"]
+)
 
     async def event_stream():
         # No docs case

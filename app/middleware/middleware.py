@@ -1,6 +1,9 @@
 import time
 from starlette.middleware.base import BaseHTTPMiddleware
-from core.metrics import REQUEST_COUNT, REQUEST_LATENCY
+from app.observability.metrics import (
+    REQUEST_COUNT,
+    REQUEST_LATENCY
+)
 
 class MetricsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
