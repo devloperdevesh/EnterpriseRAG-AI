@@ -1,81 +1,52 @@
 import { useState } from "react";
+import UploadDocument from "../../documents/UploadDocument";
+import ChunkVisualizer from "../../components/ChunkVisualizer";
+
+type Tab = "upload" | "visualize";
 
 export default function Documents() {
-  const [loading] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>("upload");
 
-  const [docs] = useState([
-    "invoice.pdf",
-    "report.docx",
-    "architecture-spec.pdf",
-    "tenant-metrics.xlsx",
-  ]);
-
-  if (loading) {
-    return <div className="p-6 text-white">Loading documents...</div>;
-  }
+  const tabs: { id: Tab; label: string; icon: string }[] = [
+    { id: "upload", label: "Upload", icon: "📤" },
+    { id: "visualize", label: "Chunk Visualizer", icon: "🔬" },
+  ];
 
   return (
-    <div
-      className="
-        p-6
-        bg-neutral-950
-        text-white
-        min-h-screen
-      "
-    >
-      {/* =========================
-          PAGE HEADER
-      ========================= */}
+    <div className="p-6 bg-neutral-950 text-white min-h-screen">
+      {/* ========================= PAGE HEADER ========================= */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Documents</h1>
-
         <p className="text-neutral-400 mt-2">
-          Manage uploaded enterprise documents and retrieval assets.
+          Manage your enterprise knowledge base and inspect how documents are
+          chunked before embedding.
         </p>
       </div>
 
-      {/* =========================
-          DOCUMENT LIST
-      ========================= */}
-      <div className="space-y-4">
-        {docs.map((doc, index) => (
-          <div
-            key={index}
-            className="
-              border
-              border-neutral-800
-              bg-neutral-900
-              rounded-2xl
-              p-4
-              transition-all
-              hover:border-neutral-700
-            "
+      {/* ========================= TABS ========================= */}
+      <div className="flex gap-2 mb-8 border-b border-neutral-800 pb-0">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`
+              px-5 py-2.5 text-sm font-medium rounded-t-xl transition-all
+              ${
+                activeTab === tab.id
+                  ? "bg-white text-black"
+                  : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+              }
+            `}
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium">{doc}</h3>
-
-                <p className="text-sm text-neutral-500 mt-1">
-                  Ready for semantic retrieval
-                </p>
-              </div>
-
-              <button
-                className="
-                  px-4
-                  py-2
-                  rounded-xl
-                  bg-white
-                  text-black
-                  text-sm
-                  font-medium
-                "
-              >
-                Open
-              </button>
-            </div>
-          </div>
+            {tab.icon} {tab.label}
+          </button>
         ))}
+      </div>
+
+      {/* ========================= TAB CONTENT ========================= */}
+      <div className="bg-white rounded-2xl p-6 text-neutral-900 min-h-[400px]">
+        {activeTab === "upload" && <UploadDocument />}
+        {activeTab === "visualize" && <ChunkVisualizer />}
       </div>
     </div>
   );

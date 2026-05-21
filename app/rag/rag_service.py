@@ -1,21 +1,29 @@
 from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import search_embedding
+from app.rag.vector_store import hybrid_search
 
 
-def answer_question(question: str) -> str:
+def answer_question(question: str, alpha: float = 0.5) -> str:
     """
-    Simple RAG answer generator
+    Hybrid RAG answer generator.
+
+    Uses BM25 + vector search fused via RRF for improved retrieval accuracy,
+    especially for technical terms, abbreviations, and exact keyword matches.
+
+    Args:
+        question: The user's question.
+        alpha:    Blend weight — 0.0 = pure BM25, 1.0 = pure vector, 0.5 = balanced.
     """
     query_embedding = generate_embedding(question)
 
-    relevant_chunks = search_embedding(query_embedding)
+    relevant_chunks = hybrid_search(
+        query=question,
+        query_embedding=query_embedding,
+        top_k=5,
+        alpha=alpha,
+    )
 
     if not relevant_chunks:
         return "I could not find relevant information in the documents."
 
-    # Simple answer strategy (for now)
-    context = " ".join(relevant_chunks)
-
-    answer = f"Based on the documents, here is the answer:\n{context}"
-
-    return answer
+    context = "\n\n".join(relevant_chunks[:3])
+    return f"Based on the documents:\n\n{context}"
