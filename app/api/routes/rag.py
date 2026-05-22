@@ -20,6 +20,17 @@ router = APIRouter(prefix="/rag", tags=["rag"])
 # the latency measurements stored in query history).
 STREAM_WORD_DELAY = 0.015
 
+# Strong references to in-flight fire-and-forget tasks so the event loop does
+# not garbage-collect them before they finish.
+_background_tasks: set[asyncio.Task] = set()
+
+
+def _dispatch_background(coro) -> None:
+    """Schedule a coroutine fire-and-forget, without blocking the response."""
+    task = asyncio.create_task(coro)
+    _background_tasks.add(task)
+    task.add_done_callback(_background_tasks.discard)
+
 
 class RAGQuery(BaseModel):
     question: str
@@ -60,19 +71,23 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
         llm_ms = round((perf_counter() - llm_start) * 1000, 2)
         total_ms = round(retrieval_ms + llm_ms, 2)
 
-        # ---- Record observability metadata (best-effort, never blocks) ----
-        await record_query(
-            user["user_id"],
-            query=question,
-            answer_summary=answer[:200],
-            chunk_count=len(results),
-            top_scores=[chunk["score"] for chunk in results],
-            source_documents=sorted(
-                {chunk["source"] for chunk in results if chunk["source"]}
-            ),
-            retrieval_latency_ms=retrieval_ms,
-            llm_latency_ms=llm_ms,
-            total_latency_ms=total_ms,
+        # ---- Record observability metadata ----
+        # Dispatched fire-and-forget (with an internal timeout) so a slow Redis
+        # can never delay the user-visible response stream.
+        _dispatch_background(
+            record_query(
+                user["user_id"],
+                query=question,
+                answer_summary=answer[:200],
+                chunk_count=len(results),
+                top_scores=[chunk["score"] for chunk in results],
+                source_documents=sorted(
+                    {chunk["source"] for chunk in results if chunk["source"]}
+                ),
+                retrieval_latency_ms=retrieval_ms,
+                llm_latency_ms=llm_ms,
+                total_latency_ms=total_ms,
+            )
         )
 
     async def event_stream():
