@@ -1,14 +1,11 @@
-from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import search_embedding
+from app.rag.hybrid_search import hybrid_search
 
 
 def answer_question(question: str) -> str:
     """
     Simple RAG answer generator
     """
-    query_embedding = generate_embedding(question)
-
-    relevant_chunks = search_embedding(query_embedding)
+    relevant_chunks = hybrid_search(question)
 
     if not relevant_chunks:
         return "I could not find relevant information in the documents."
