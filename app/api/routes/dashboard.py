@@ -5,7 +5,6 @@ from app.core.dependencies import get_current_user
 router = APIRouter(
     prefix="/dashboard",
     tags=["dashboard"],
-    dependencies=[Depends(get_current_user)],
 )
 
 

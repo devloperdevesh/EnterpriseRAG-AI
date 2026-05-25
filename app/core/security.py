@@ -30,10 +30,13 @@ def create_access_token(
         expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     subject = data.get("sub") or data.get("user_id")
+    if subject is None:
+        raise ValueError("JWT access tokens require a subject")
+
     to_encode = {
         **data,
         "exp": expire,
-        "sub": str(subject) if subject is not None else None,
+        "sub": str(subject),
     }
     return jwt.encode(
         to_encode,

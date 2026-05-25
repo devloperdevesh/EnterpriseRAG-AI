@@ -61,7 +61,13 @@ def health():
 
 
 @app.get("/metrics")
-def metrics():
+def metrics(user=Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not allowed",
+        )
+
     return Response(generate_latest(), media_type="text/plain")
 
 

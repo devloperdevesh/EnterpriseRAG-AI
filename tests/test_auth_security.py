@@ -1,8 +1,8 @@
 import os
 from datetime import timedelta
 
-os.environ.setdefault("DATABASE_URL", "sqlite:///./test_auth.db")
-os.environ.setdefault("SECRET_KEY", "test-secret")
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+os.environ["SECRET_KEY"] = "test-secret"
 
 from fastapi import Depends, FastAPI
 from fastapi.testclient import TestClient
@@ -14,6 +14,7 @@ from app.core.security import (
     hash_password,
     verify_password,
 )
+from app.main import app as main_app
 
 
 def _client():
@@ -24,6 +25,17 @@ def _client():
         return {"user": user}
 
     return TestClient(app)
+
+
+def _auth_header(role: str):
+    token = create_access_token(
+        {
+            "user_id": 123,
+            "tenant_id": "tenant-a",
+            "role": role,
+        }
+    )
+    return {"Authorization": f"Bearer {token}"}
 
 
 def test_access_token_contains_session_claims():
@@ -42,6 +54,13 @@ def test_access_token_contains_session_claims():
     assert payload["sub"] == "123"
     assert payload["tenant_id"] == "tenant-a"
     assert payload["role"] == "admin"
+
+
+def test_access_token_requires_subject_claim():
+    import pytest
+
+    with pytest.raises(ValueError, match="JWT access tokens require a subject"):
+        create_access_token({"tenant_id": "tenant-a"})
 
 
 def test_password_hashes_verify_against_plaintext():
@@ -90,3 +109,11 @@ def test_protected_route_rejects_expired_token():
     )
 
     assert response.status_code == 401
+
+
+def test_metrics_requires_admin_token():
+    client = TestClient(main_app)
+
+    assert client.get("/metrics").status_code == 401
+    assert client.get("/metrics", headers=_auth_header("user")).status_code == 403
+    assert client.get("/metrics", headers=_auth_header("admin")).status_code == 200
