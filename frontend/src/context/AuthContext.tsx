@@ -1,33 +1,79 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+
+import { api } from "../api/client";
+import { clearStoredToken, getStoredToken, storeToken } from "../utils/auth";
 
 type AuthContextType = {
   token: string | null;
-  login: (tok: string) => void;
+  isAuthenticated: boolean;
+  isCheckingSession: boolean;
+  login: (token: string) => void;
   logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [token, setToken] = useState<string | null>(() => getStoredToken());
+  const [isCheckingSession, setIsCheckingSession] = useState(() =>
+    Boolean(getStoredToken()),
   );
 
-  const login = (tok: string) => {
-    localStorage.setItem("token", tok);
-    setToken(tok);
-  };
+  useEffect(() => {
+    const storedToken = getStoredToken();
+    if (!storedToken) {
+      setToken(null);
+      setIsCheckingSession(false);
+      return;
+    }
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-  };
+    let active = true;
 
-  return (
-    <AuthContext.Provider value={{ token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+    api
+      .get("/auth/me")
+      .then(() => {
+        if (active) {
+          setIsCheckingSession(false);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          clearStoredToken();
+          setToken(null);
+          setIsCheckingSession(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const value = useMemo<AuthContextType>(
+    () => ({
+      token,
+      isAuthenticated: Boolean(token),
+      isCheckingSession,
+      login: (newToken: string) => {
+        storeToken(newToken);
+        setToken(newToken);
+      },
+      logout: () => {
+        clearStoredToken();
+        setToken(null);
+      },
+    }),
+    [isCheckingSession, token],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
