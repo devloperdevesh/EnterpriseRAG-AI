@@ -1,92 +1,53 @@
-from datetime import datetime, timedelta
-from typing import Optional
+from datetime import datetime, timedelta, timezone
+from typing import Any
 
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
 
-# ===============================
-# Password hashing context
-# ===============================
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
-)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# ===============================
-# PASSWORD UTILITIES
-# ===============================
+
+def _normalize_password(password: str) -> str:
+    """Limit bcrypt input to its supported 72-byte maximum."""
+    return password.encode("utf-8")[:72].decode("utf-8", errors="ignore")
+
 
 def hash_password(password: str) -> str:
-    # bcrypt supports max 72 bytes
-    password_bytes = password.encode("utf-8")[:72]
-    return pwd_context.hash(password_bytes)
+    return pwd_context.hash(_normalize_password(password))
 
 
 def verify_password(password: str, hashed_password: str) -> bool:
-    password_bytes = password.encode("utf-8")[:72]
-    return pwd_context.verify(password_bytes, hashed_password)
+    return pwd_context.verify(_normalize_password(password), hashed_password)
 
-# ===============================
-# JWT UTILITIES
-# ===============================
 
 def create_access_token(
-    data: dict,
-    expires_delta: Optional[timedelta] = None
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
-    to_encode = data.copy()
-
-    expire = datetime.utcnow() + (
-        expires_delta
-        if expires_delta
-        else timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.now(timezone.utc) + (
+        expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-
-    to_encode.update({
+    subject = data.get("sub") or data.get("user_id")
+    to_encode = {
+        **data,
         "exp": expire,
-        "sub": str(data.get("user_id"))  # STANDARD & SAFE
-    })
-
+        "sub": str(subject) if subject is not None else None,
+    }
     return jwt.encode(
         to_encode,
         settings.SECRET_KEY,
-        algorithm="HS256"
+        algorithm=settings.ALGORITHM,
     )
 
 
-def decode_access_token(token: str) -> Optional[dict]:
+def decode_access_token(token: str) -> dict[str, Any] | None:
     try:
         return jwt.decode(
             token,
             settings.SECRET_KEY,
-            algorithms=["HS256"]
+            algorithms=[settings.ALGORITHM],
         )
-    except JWTError:
-        return None
-
-
-
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
-
-SECRET_KEY = "supersecret"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    
-    to_encode.update({"exp": expire})
-    
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-
-def verify_token(token: str):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
     except JWTError:
         return None

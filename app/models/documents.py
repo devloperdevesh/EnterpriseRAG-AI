@@ -1,9 +1,7 @@
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.sql import func
 
-from app.db.session import Base
-from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import add_embedding
+from app.db.base import Base
 
 
 class Document(Base):
@@ -19,6 +17,9 @@ class Document(Base):
 
 
 def process_document(doc_id: str):
+    from app.rag.embeddings import generate_embedding
+    from app.rag.vector_store import add_embedding
+
     # Placeholder for document processing logic
     text = "Company allowes 20 days paid leave"
     embedding = generate_embedding(text)

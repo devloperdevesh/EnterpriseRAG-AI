@@ -1,15 +1,26 @@
 import asyncio
+from contextlib import nullcontext
 from time import perf_counter
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from opentelemetry import trace
+
+try:
+    from opentelemetry import trace
+except ImportError:  # pragma: no cover - observability is optional in tests
+    class _NoopTracer:
+        def start_as_current_span(self, *_args, **_kwargs):
+            return nullcontext()
+
+    class _NoopTrace:
+        @staticmethod
+        def get_tracer(_name):
+            return _NoopTracer()
+
+    trace = _NoopTrace()
 
 from app.core.dependencies import get_current_user
-from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import search_embedding_scored
-from app.rag.llm import generate_answer
 from app.rag.query_history import record_query, get_history, MAX_HISTORY_PER_USER
 
 tracer = trace.get_tracer(__name__)
@@ -45,6 +56,9 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
     persisted to the per-user Redis query history for later inspection.
     """
     question = data.question
+    from app.rag.embeddings import generate_embedding
+    from app.rag.llm import generate_answer
+    from app.rag.vector_store import search_embedding_scored
 
     with tracer.start_as_current_span("rag-query"):
         # ---- Retrieval phase: embedding + vector search ----
