@@ -12,6 +12,7 @@ from app.rag.vector_store import search_embedding_scored
 from app.rag.llm import generate_answer
 from app.rag.query_history import record_query, get_history, MAX_HISTORY_PER_USER
 
+router = APIRouter(prefix="/rag", tags=["rag"])
 tracer = trace.get_tracer(__name__)
 
 router = APIRouter(prefix="/rag", tags=["rag"])
