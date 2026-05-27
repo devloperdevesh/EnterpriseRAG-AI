@@ -1,4 +1,6 @@
-import uuid, os, shutil
+import os
+import shutil
+import uuid
 from fastapi import APIRouter, Depends, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
 import PyPDF2
@@ -17,7 +19,7 @@ UPLOAD_DIR = "uploaded_docs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-def process_document(filepath: str):
+def process_document(filepath: str, source_name: str | None = None):
     # ---- Read PDF ----
     reader = PyPDF2.PdfReader(filepath)
     full_text = ""
@@ -30,9 +32,11 @@ def process_document(filepath: str):
     chunks = chunk_text(full_text)
 
     # ---- Generate embeddings & store ----
+    # `source_name` is recorded alongside each chunk so retrieval results can
+    # report which document they came from (used by the query history panel).
     for chunk in chunks:
         emb = generate_embedding(chunk)
-        add_embedding(emb, chunk)
+        add_embedding(emb, chunk, source=source_name)
 
     print("✅ Document embedded successfully")
 
@@ -60,6 +64,6 @@ def upload_document(
     db.commit()
 
     # ---- Run embedding in background ----
-    background_tasks.add_task(process_document, save_path)
+    background_tasks.add_task(process_document, save_path, file.filename)
 
     return {"status": "uploaded"}

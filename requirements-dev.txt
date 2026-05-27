@@ -1,0 +1,6 @@
+# Development / CI dependencies (not required at runtime).
+-r requirements.txt
+
+pytest
+ruff
+fakeredis   # in-memory Redis for hermetic query-history tests
