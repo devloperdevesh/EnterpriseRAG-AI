@@ -61,8 +61,7 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
 
             return StreamingResponse(empty_stream(), media_type="text/plain")
 
-        # Use the single most relevant chunk as context (unchanged behaviour).
-        context = results[0]["text"]
+        context = "\n\n".join(chunk["text"] for chunk in results)
 
         # ---- LLM phase: answer generation ----
         llm_start = perf_counter()
