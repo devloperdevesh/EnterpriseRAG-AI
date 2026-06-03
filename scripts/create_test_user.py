@@ -5,7 +5,6 @@ from app.core.security import hash_password
 
 db = SessionLocal()
 user = User(
-    id="user_1",
     email="admin@test.com",
     hashed_password=hash_password("test123"),
     tenant_id="tenant_1",
