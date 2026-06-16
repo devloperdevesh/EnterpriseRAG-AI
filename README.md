@@ -4,6 +4,37 @@
 
 EnterpriseRAG AI is a distributed AI infrastructure engineering platform focused on Retrieval-Augmented Generation workflows, observability-first backend systems, realtime streaming pipelines, semantic retrieval infrastructure, and scalable async execution architectures.
 
+---
+
+## 📚 Table of Contents
+
+- [EnterpriseRAG AI](#enterpriserag-ai)
+- [Infrastructure Vision](#infrastructure-vision)
+- [Current Development Status](#current-development-status)
+- [Core Engineering Focus Areas](#core-engineering-focus-areas)
+  - [Distributed Retrieval Infrastructure](#distributed-retrieval-infrastructure)
+  - [Observability-Driven Backend Systems](#observability-driven-backend-systems)
+  - [Streaming Infrastructure Workflows](#streaming-infrastructure-workflows)
+- [High-Level Architecture](#high-level-architecture)
+- [Request Lifecycle Visibility](#request-lifecycle-visibility)
+- [Planned Infrastructure Visualizations](#planned-infrastructure-visualizations)
+  - [Retrieval Workflow Visualization](#retrieval-workflow-visualization)
+  - [Distributed Trace Explorer](#distributed-trace-explorer)
+  - [Streaming Observability Dashboard](#streaming-observability-dashboard)
+- [Engineering Roadmap](#engineering-roadmap)
+- [Contribution Areas](#contribution-areas)
+- [Open Source Engineering Direction](#open-source-engineering-direction)
+- [Technology Stack](#technology-stack)
+  - [Backend Infrastructure](#backend-infrastructure)
+  - [Frontend Infrastructure](#frontend-infrastructure)
+  - [Observability Stack](#observability-stack)
+  - [Infrastructure & Deployment](#infrastructure--deployment)
+- [Engineering Areas Explored](#engineering-areas-explored)
+- [Open Source Collaboration](#open-source-collaboration)
+- [Author](#author)
+
+---
+
 The platform is designed to explore practical backend engineering concepts around:
 
 * distributed AI infrastructure
