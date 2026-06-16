@@ -3,7 +3,7 @@ from time import perf_counter
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from opentelemetry import trace
 
 from app.core.dependencies import get_current_user
@@ -33,7 +33,7 @@ def _dispatch_background(coro) -> None:
 
 
 class RAGQuery(BaseModel):
-    question: str
+    question: str = Field(..., max_length=500)
 
 
 @router.post("/query/stream")
