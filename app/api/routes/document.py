@@ -3,15 +3,10 @@ import shutil
 import uuid
 from fastapi import APIRouter, Depends, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
-import PyPDF2
 
 from app.core.dependencies import get_current_user
 from app.db.deps import get_db
 from app.models.documents import Document
-
-from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import add_embedding
-from app.rag.chunker import chunk_text
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -20,6 +15,12 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 def process_document(filepath: str, source_name: str | None = None):
+    import PyPDF2
+
+    from app.rag.chunker import chunk_text
+    from app.rag.embeddings import generate_embedding
+    from app.rag.vector_store import add_embedding
+
     # ---- Read PDF ----
     reader = PyPDF2.PdfReader(filepath)
     full_text = ""

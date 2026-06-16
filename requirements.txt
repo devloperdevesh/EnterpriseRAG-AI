@@ -15,6 +15,7 @@ python-dotenv
 requests
 gunicorn
 PyPDF2
+prometheus-client
 
 sentence-transformers==2.7.0
 faiss-cpu==1.13.2
