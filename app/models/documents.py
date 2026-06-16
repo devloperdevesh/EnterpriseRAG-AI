@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.sql import func
 
-from app.db.session import Base
+from app.db.base import Base
 from app.rag.embeddings import generate_embedding
 from app.rag.vector_store import add_embedding
 
