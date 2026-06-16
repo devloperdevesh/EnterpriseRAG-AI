@@ -4,7 +4,7 @@ import axios from "axios";
 // backend during development; falls back to the hosted deployment.
 export const API_BASE_URL =
   import.meta.env.VITE_API_URL ??
-  "https://enterpriserag-production.up.railway.app";
+  "http://127.0.0.1:8000/";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

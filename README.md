@@ -328,6 +328,216 @@ Rather than positioning itself as a finished enterprise platform, the repository
 
 ---
 
+# Local Development Setup
+
+## Prerequisites
+
+Install the following:
+
+* Python 3.11+
+* Node.js 18+
+* Git
+* Docker Desktop
+
+---
+
+# Clone Repository
+
+```bash
+git clone https://github.com/devloperdevesh/EnterpriseRAG-AI.git
+
+cd EnterpriseRAG-AI
+```
+
+---
+
+# Infrastructure Setup (Docker)
+
+EnterpriseRAG uses PostgreSQL and Redis for local development.
+
+Start the infrastructure services:
+
+```bash
+docker compose up -d postgres redis
+```
+
+Verify containers are running:
+
+```bash
+docker ps
+```
+
+Expected containers:
+
+```text
+postgres_enterprise_rag
+redis_enterprise_rag
+```
+
+Default local services:
+
+| Service    | Port |
+| ---------- | ---- |
+| PostgreSQL | 5432 |
+| Redis      | 6379 |
+
+---
+
+# Backend Setup
+
+Navigate to the backend directory:
+
+```bash
+cd app
+```
+
+Create virtual environment:
+
+### Windows
+
+```bash
+python -m venv venv
+
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python -m venv venv
+
+source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements/base.txt
+
+pip install -r requirements/dev.txt
+```
+
+---
+
+# Environment Configuration
+
+Create a `.env` file inside the backend directory:
+
+```env
+APP_NAME=EnterpriseRAG
+
+SECRET_KEY=change-me
+
+ALGORITHM=HS256
+
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+
+DATABASE_URL=postgresql://postgres:password@localhost:5432/enterprise_rag
+
+REDIS_URL=redis://localhost:6379/0
+```
+
+---
+
+# Run Backend
+
+Start the FastAPI server:
+
+```bash
+uvicorn main:app --reload
+```
+
+Backend API:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger Documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+# Frontend Setup
+
+Open a new terminal.
+
+Navigate to frontend:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
+
+```bash
+npm run dev
+```
+
+Frontend:
+
+```text
+http://localhost:5173
+```
+
+---
+
+# Full Infrastructure Stack (Optional)
+
+To start all available services:
+
+```bash
+docker compose up -d
+```
+
+This may include:
+
+* PostgreSQL
+* Redis
+* Grafana
+* Prometheus
+* Backend Services (when configured)
+
+Stop all services:
+
+```bash
+docker compose down
+```
+
+---
+
+# Current Development Features
+
+Implemented:
+
+* User Authentication
+* JWT-based Authorization
+* Document Upload Pipeline
+* PDF Processing
+* Semantic Chunking
+* Embedding Generation
+* FAISS Vector Storage
+* React Dashboard Interface
+
+Under Active Development:
+
+* Infrastructure Observability
+* Metrics Visualization
+* Distributed Tracing
+* Streaming Workflows
+* Reliability Engineering Features
+* Retrieval Diagnostics
+
+
 # Engineering Areas Explored
 
 * distributed systems engineering

@@ -3,19 +3,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer
-from core.security import verify_token
 
-security = HTTPBearer()
-
-def get_current_user(token=Depends(security)):
-    payload = verify_token(token.credentials)
-    
-    if payload is None:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    
-    return payload
-
-from app.core.config import settings
+from core.config import settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 

@@ -1,6 +1,6 @@
 from PyPDF2 import PdfReader
-from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import add_embedding
+from rag.embeddings import generate_embedding
+from rag.vector_store import add_embedding
 
 def process_pdf(file_path: str):
     reader = PdfReader(file_path)

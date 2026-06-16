@@ -1,5 +1,5 @@
 from starlette.middleware.base import BaseHTTPMiddleware
-from core.logging import logger
+from observability.logging import logger
 import time
 
 class LoggingMiddleware(BaseHTTPMiddleware):
