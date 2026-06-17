@@ -1,43 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
-from fastapi import APIRouter
-from core.security import create_access_token
-from fastapi import Depends
-from core.rate_limit import limiter
 
-@router.get("/rag-query", dependencies=[Depends(limiter(5, 60))])
-def rag_query():
-    return {"msg": "Rate limited endpoint"}
-
-router = APIRouter()
-
-@router.post("/login")
-def login():
-    # dummy user (replace with DB later)
-    user_data = {"sub": "admin"}
-    
-    token = create_access_token(user_data)
-    
-    return {"access_token": token, "token_type": "bearer"}
-
-from fastapi import Depends
-from core.dependencies import get_current_user
-
-@router.get("/secure")
-def secure_route(user=Depends(get_current_user)):
-    return {"message": "Authorized", "user": user}
-
-from app.db.deps import get_db
-from app.models.user import User
 from app.core.security import (
     hash_password,
     verify_password,
     create_access_token,
 )
+from app.reliability.rate_limit import limiter
+from app.core.dependencies import get_current_user
+from app.db.deps import get_db
+from app.models.user import User
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
 
 # ======================
 # Schemas
@@ -127,3 +102,17 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         "access_token": token,
         "token_type": "bearer",
     }
+
+
+# ======================
+# Observability / Extra Routes
+# ======================
+
+@router.get("/rag-query", dependencies=[Depends(limiter(5, 60))])
+def rag_query():
+    return {"msg": "Rate limited endpoint"}
+
+
+@router.get("/secure")
+def secure_route(user=Depends(get_current_user)):
+    return {"message": "Authorized", "user": user}
