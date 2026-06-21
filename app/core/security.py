@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from jose import jwt, JWTError
@@ -19,74 +19,50 @@ pwd_context = CryptContext(
 # ===============================
 
 def hash_password(password: str) -> str:
+    """Hash a plaintext password using bcrypt."""
     # bcrypt supports max 72 bytes
     password_bytes = password.encode("utf-8")[:72]
     return pwd_context.hash(password_bytes)
 
 
 def verify_password(password: str, hashed_password: str) -> bool:
+    """Verify a plaintext password against a bcrypt hash."""
     password_bytes = password.encode("utf-8")[:72]
     return pwd_context.verify(password_bytes, hashed_password)
 
+
 # ===============================
-# JWT UTILITIES
+# TOKEN UTILITIES
 # ===============================
 
 def create_access_token(
     data: dict,
-    expires_delta: Optional[timedelta] = None
+    expires_delta: Optional[timedelta] = None,
 ) -> str:
-    to_encode = data.copy()
+    """
+    Create a signed JWT access token.
 
-    expire = datetime.utcnow() + (
+    Uses settings.SECRET_KEY and settings.ALGORITHM from app config.
+    Never hardcodes the secret — all secrets must come from environment variables.
+    """
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + (
         expires_delta
-        if expires_delta
+        if expires_delta is not None
         else timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-
-    to_encode.update({
-        "exp": expire,
-        "sub": str(data.get("user_id"))  # STANDARD & SAFE
-    })
-
-    return jwt.encode(
-        to_encode,
-        settings.SECRET_KEY,
-        algorithm="HS256"
-    )
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-def decode_access_token(token: str) -> Optional[dict]:
+def verify_token(token: str) -> Optional[dict]:
+    """Decode and validate a JWT token. Returns the payload dict or None if invalid."""
     try:
-        return jwt.decode(
+        payload = jwt.decode(
             token,
             settings.SECRET_KEY,
-            algorithms=["HS256"]
+            algorithms=[settings.ALGORITHM],
         )
-    except JWTError:
-        return None
-
-
-
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
-
-SECRET_KEY = "supersecret"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    
-    to_encode.update({"exp": expire})
-    
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-
-def verify_token(token: str):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
     except JWTError:
         return None
