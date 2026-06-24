@@ -1,79 +1,42 @@
 # EnterpriseRAG-AI
 
-## Observability-Driven Async AI Retrieval Platform
+## Observability-First AI Infrastructure Platform
 
-EnterpriseRAG-AI is an observability-first Retrieval-Augmented Generation (RAG) platform designed for distributed AI workloads, asynchronous execution pipelines, semantic retrieval infrastructure, and real-time streaming systems.
+EnterpriseRAG-AI is an observability-driven AI infrastructure platform focused on Retrieval-Augmented Generation (RAG), distributed tracing, semantic retrieval, async orchestration, and scalable backend execution.
 
-The project explores modern backend systems engineering principles including distributed tracing, infrastructure telemetry, retrieval diagnostics, async orchestration, reliability engineering, and scalable AI execution architectures.
+The project explores modern infrastructure engineering patterns around request lifecycle visibility, telemetry pipelines, retrieval diagnostics, reliability engineering, streaming systems, and distributed backend architectures.
 
-### Performance Benchmarks
+### Key Metrics
 
-| Metric          | Result                  |
-| --------------- | ----------------------- |
-| Throughput      | ~850 Requests/sec       |
-| p95 Latency     | ~480ms                  |
-| Architecture    | Async FastAPI Services  |
-| Retrieval Layer | FAISS + Semantic Search |
-| Caching Layer   | Redis                   |
-| Database        | PostgreSQL              |
-| Observability   | OpenTelemetry + Jaeger  |
-| Metrics         | Prometheus + Grafana    |
+| Metric          | Value                  |
+| --------------- | ---------------------- |
+| Throughput      | ~850 Requests/sec      |
+| p95 Latency     | ~480ms                 |
+| Architecture    | Async FastAPI Services |
+| Retrieval Layer | FAISS Semantic Search  |
+| Cache Layer     | Redis                  |
+| Database        | PostgreSQL             |
+| Observability   | OpenTelemetry + Jaeger |
+| Metrics         | Prometheus + Grafana   |
 
-### Engineering Highlights
-
-* High-concurrency async execution architecture
-* Observability-first request lifecycle instrumentation
-* Distributed tracing across retrieval and inference pipelines
-* Real-time streaming infrastructure
-* Semantic retrieval diagnostics and latency analysis
-* Queue-oriented backend orchestration
-* Infrastructure telemetry and performance monitoring
-* Enterprise-scale backend experimentation
-
-### Architecture Focus
-
-EnterpriseRAG-AI focuses on:
+### Engineering Focus
 
 * Distributed AI Infrastructure
-* Retrieval-Augmented Generation Systems
-* Async Backend Engineering
-* Observability & Telemetry
-* Streaming Inference Pipelines
-* Reliability Engineering
-* Queue-Based Orchestration
-* Infrastructure Diagnostics
+* Retrieval-Augmented Generation
+* Async Backend Systems
 * Distributed Tracing
+* Infrastructure Telemetry
+* Streaming Pipelines
+* Reliability Engineering
 * Performance Optimization
+* Semantic Retrieval Systems
+* Queue-Oriented Orchestration
 
-### Benchmark Reports
+📈 Detailed performance reports, latency analysis, throughput benchmarks, and infrastructure diagnostics:
 
-Detailed scalability analysis, latency optimization studies, infrastructure bottleneck investigations, throughput testing reports, and observability benchmarks are available in:
-
-```text
-PERFORMANCE_BENCHMARKS.md
-```
+**[View Performance Benchmarks](./PERFORMANCE_BENCHMARKS.md)**
 
 
-## Observability-First AI Systems Engineering Platform
-
-EnterpriseRAG AI is a distributed AI infrastructure engineering platform focused on Retrieval-Augmented Generation workflows, observability-first backend systems, realtime streaming pipelines, semantic retrieval infrastructure, and scalable async execution architectures.
-
-The platform is designed to explore practical backend engineering concepts around:
-
-* distributed AI infrastructure
-* observability-driven backend systems
-* semantic retrieval workflows
-* async execution pipelines
-* queue-oriented orchestration
-* realtime streaming systems
-* distributed tracing
-* infrastructure telemetry
-* reliability engineering workflows
-* scalable AI backend experimentation
-
-Unlike traditional chatbot-focused RAG projects, EnterpriseRAG AI focuses heavily on infrastructure visibility, request lifecycle diagnostics, streaming observability, and backend workflow instrumentation.
-
----
 
 # Infrastructure Vision
 
@@ -180,40 +143,39 @@ EnterpriseRAG AI explores realtime streaming infrastructure workflows focused on
                          │ FastAPI Async Services  │
                          └────────────┬────────────┘
                                       │
-             ┌────────────────────────┴────────────────────────┐
-             ▼                                                 ▼
- ┌─────────────────────────┐                     ┌─────────────────────────┐
- │ Redis Cache Layer       │                     │ Redis Queue System      │
- └────────────┬────────────┘                     └────────────┬────────────┘
-              │                                                 │
-              ▼                                                 ▼
- ┌─────────────────────────┐                     ┌─────────────────────────┐
- │ FAISS Vector Retrieval  │                     │ Background Workers      │
- └────────────┬────────────┘                     └─────────────────────────┘
-              │
-              ▼
- ┌─────────────────────────┐
- │ Context Assembly Layer  │
- └────────────┬────────────┘
-              │
-              ▼
- ┌─────────────────────────┐
- │ LLM Inference Pipeline  │
- └────────────┬────────────┘
-              │
-              ▼
- ┌─────────────────────────┐
- │ Streaming Response Bus  │
- └────────────┬────────────┘
-              │
-              ▼
- ┌─────────────────────────┐
- │ Observability Stack     │
- │ OpenTelemetry           │
- │ Jaeger                  │
- │ Prometheus              │
- │ Grafana                 │
- └─────────────────────────┘
+          ┌───────────────┬────────────┼────────────┬───────────────┐
+          ▼               ▼            ▼            ▼
+   ┌───────────┐   ┌───────────┐ ┌───────────┐ ┌────────────┐
+   │ Redis     │   │ FAISS     │ │ PostgreSQL│ │ Celery     │
+   │ Cache     │   │ Retrieval │ │ Database  │ │ Workers    │
+   └─────┬─────┘   └─────┬─────┘ └─────┬─────┘ └─────┬──────┘
+         │               │             │             │
+         └───────────────┴─────────────┴─────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Context Assembly Layer  │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ LLM Execution Pipeline  │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Streaming Response Bus  │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ OpenTelemetry Tracing   │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                   ┌──────────────────────────────────────┐
+                   │ Jaeger • Prometheus • Grafana        │
+                   └──────────────────────────────────────┘
 ```
 
 ---
@@ -307,6 +269,7 @@ Realtime streaming analytics focused on:
 | Kubernetes Workflows       | Scalable deployment infrastructure                     | Planned     |
 | Backend Diagnostics        | Infrastructure failure analysis tooling                | Planned     |
 | AI Systems Instrumentation | Advanced telemetry pipelines for retrieval systems     | Planned     |
+| Event Streaming Infrastructure | Apache Kafka Integration | Planned |
 
 ---
 
@@ -352,12 +315,18 @@ Rather than positioning itself as a finished enterprise platform, the repository
 
 ## Backend Infrastructure
 
-* FastAPI
-* Redis
-* PostgreSQL
-* SQLAlchemy
-* FAISS
-* Celery
+- FastAPI
+- Redis
+- PostgreSQL
+- SQLAlchemy
+- FAISS
+- Celery
+
+### Planned Infrastructure
+
+- Apache Kafka (Event Streaming)
+- Queue Buffer Mesh
+- Event-Driven Processing Pipelines
 
 ## Frontend Infrastructure
 
@@ -415,8 +384,10 @@ EnterpriseRAG AI actively encourages contributor collaboration around:
 
 ---
 
-# Author
-
 ## Devesh Chauhan
 
-Backend Systems Engineering • Distributed Systems • Observability • AI Infrastructure
+Backend Systems Engineer focused on Distributed Systems, Observability, AI Infrastructure, and Scalable Backend Architectures.
+
+- Project Admin & Mentor, GSSoC
+- Open Source Contributor
+- Distributed Systems & AI Infrastructure Enthusiast
