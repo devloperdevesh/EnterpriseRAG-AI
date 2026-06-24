@@ -1,4 +1,58 @@
-# EnterpriseRAG AI
+# EnterpriseRAG-AI
+
+## Observability-Driven Async AI Retrieval Platform
+
+EnterpriseRAG-AI is an observability-first Retrieval-Augmented Generation (RAG) platform designed for distributed AI workloads, asynchronous execution pipelines, semantic retrieval infrastructure, and real-time streaming systems.
+
+The project explores modern backend systems engineering principles including distributed tracing, infrastructure telemetry, retrieval diagnostics, async orchestration, reliability engineering, and scalable AI execution architectures.
+
+### Performance Benchmarks
+
+| Metric          | Result                  |
+| --------------- | ----------------------- |
+| Throughput      | ~850 Requests/sec       |
+| p95 Latency     | ~480ms                  |
+| Architecture    | Async FastAPI Services  |
+| Retrieval Layer | FAISS + Semantic Search |
+| Caching Layer   | Redis                   |
+| Database        | PostgreSQL              |
+| Observability   | OpenTelemetry + Jaeger  |
+| Metrics         | Prometheus + Grafana    |
+
+### Engineering Highlights
+
+* High-concurrency async execution architecture
+* Observability-first request lifecycle instrumentation
+* Distributed tracing across retrieval and inference pipelines
+* Real-time streaming infrastructure
+* Semantic retrieval diagnostics and latency analysis
+* Queue-oriented backend orchestration
+* Infrastructure telemetry and performance monitoring
+* Enterprise-scale backend experimentation
+
+### Architecture Focus
+
+EnterpriseRAG-AI focuses on:
+
+* Distributed AI Infrastructure
+* Retrieval-Augmented Generation Systems
+* Async Backend Engineering
+* Observability & Telemetry
+* Streaming Inference Pipelines
+* Reliability Engineering
+* Queue-Based Orchestration
+* Infrastructure Diagnostics
+* Distributed Tracing
+* Performance Optimization
+
+### Benchmark Reports
+
+Detailed scalability analysis, latency optimization studies, infrastructure bottleneck investigations, throughput testing reports, and observability benchmarks are available in:
+
+```text
+PERFORMANCE_BENCHMARKS.md
+```
+
 
 ## Observability-First AI Systems Engineering Platform
 
