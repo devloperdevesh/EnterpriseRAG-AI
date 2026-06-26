@@ -1,3 +1,4 @@
+import os
 from opentelemetry import trace
 from opentelemetry.sdk.resources import SERVICE_NAME, Resource
 from opentelemetry.sdk.trace import TracerProvider
@@ -17,7 +18,7 @@ def setup_tracing():
     tracer = trace.get_tracer(__name__)
 
     jaeger_exporter = JaegerExporter(
-        agent_host_name="localhost",
+        agent_host_name=os.getenv("JAEGER_HOST", "localhost"),
         agent_port=6831,
     )
 

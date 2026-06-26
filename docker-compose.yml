@@ -1,6 +1,45 @@
-version: "3.8"
-
 services:
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: enterpriserag
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - "16686:16686"
+      - "6831:6831/udp"
+
+  api:
+    build: .
+    container_name: fastapi_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/enterpriserag
+      - REDIS_URL=redis://redis:6379/0
+      - JAEGER_HOST=jaeger
+    depends_on:
+      - db
+      - redis
+      - jaeger
+    volumes:
+      - .:/app
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -8,8 +47,14 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    depends_on:
+      - api
 
   grafana:
     image: grafana/grafana
+    container_name: grafana
     ports:
       - "3000:3000"
+
+volumes:
+  postgres_data:
