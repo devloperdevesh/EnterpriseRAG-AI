@@ -14,8 +14,8 @@ python-multipart
 python-dotenv
 requests
 gunicorn
-PyPDF2
-
+pypdf>=4.0.0
+python-docx>=1.1.0
 sentence-transformers==2.7.0
 faiss-cpu==1.13.2
 torch==2.7.1
