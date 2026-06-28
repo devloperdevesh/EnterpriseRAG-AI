@@ -1,0 +1,108 @@
+name: Feature Request
+description: Propose a new feature or enhancement for EnterpriseRAG-AI
+title: "[Feature]: "
+labels: ["enhancement", "needs-discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please fill in the details below to help us understand your proposal.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What limitation or gap does it address?
+      placeholder: |
+        Currently, the semantic retrieval pipeline does not support multi-modal inputs...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature you'd like to see implemented.
+      placeholder: |
+        Add support for image-based document ingestion using a vision encoder alongside existing Sentence Transformers...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Related Component
+      description: Which part of the system does this feature relate to?
+      options:
+        - FastAPI API Layer
+        - Redis Cache / Queue
+        - FAISS Vector Retrieval
+        - LLM Inference Layer
+        - PostgreSQL / SQLAlchemy
+        - Celery Workers
+        - OpenTelemetry / Jaeger Tracing
+        - Prometheus / Grafana Monitoring
+        - Docker / docker-compose
+        - Kubernetes / k8s
+        - Frontend (React/TypeScript)
+        - New Component / Infrastructure
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative approaches or workarounds?
+      placeholder: |
+        We could use a separate microservice for embeddings, but that adds unnecessary overhead...
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: List specific, testable criteria for this feature to be considered done.
+      placeholder: |
+        - [ ] API accepts the new input type
+        - [ ] Unit and integration tests cover the new path
+        - [ ] Documentation updated
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low — nice to have
+        - Medium — would improve the system meaningfully
+        - High — blocking a use case or production scenario
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any mockups, references, related issues, or further context.
+
+  - type: checkboxes
+    id: gssoc
+    attributes:
+      label: GSSoC 2026
+      options:
+        - label: I am a registered GSSoC 2026 contributor
+          required: false
+        - label: I would like to implement this feature myself
+          required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I have clearly described the problem and proposed solution
+          required: true
