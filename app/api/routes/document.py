@@ -3,10 +3,11 @@ import shutil
 import uuid
 from fastapi import APIRouter, Depends, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
-import PyPDF2
 
 from app.core.dependencies import get_current_user
 from app.db.deps import get_db
+from app.db.session import SessionLocal
+import PyPDF2
 from app.models.documents import Document
 
 from app.rag.embeddings import generate_embedding
@@ -19,27 +20,39 @@ UPLOAD_DIR = "uploaded_docs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-def process_document(filepath: str, source_name: str | None = None):
-    # ---- Read PDF ----
-    reader = PyPDF2.PdfReader(filepath)
-    full_text = ""
-    for page in reader.pages:
-        text = page.extract_text()
-        if text:
-            full_text += text + "\n"
+def process_document(filepath: str, doc_id: str, source_name: str | None = None):
+    db: Session = SessionLocal()
+    try:
+        # ---- Read PDF ----
+        reader = PyPDF2.PdfReader(filepath)
+        full_text = ""
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                full_text += text + "\n"
 
-    # ---- Split into chunks ----
-    chunks = chunk_text(full_text)
+        # ---- Split into chunks ----
+        chunks = chunk_text(full_text)
 
-    # ---- Generate embeddings & store ----
-    # `source_name` is recorded alongside each chunk so retrieval results can
-    # report which document they came from (used by the query history panel).
-    for chunk in chunks:
-        emb = generate_embedding(chunk)
-        add_embedding(emb, chunk, source=source_name)
+        # ---- Generate embeddings & store ----
+        for chunk in chunks:
+            emb = generate_embedding(chunk)
+            add_embedding(emb, chunk, source=source_name)
 
-    print("✅ Document embedded successfully")
+        document = db.query(Document).filter(Document.id == doc_id).first()
+        if document:
+            document.status = "processed"
+            db.commit()
 
+        print("✅ Document embedded successfully")
+    except Exception as e:
+        print(f"Error processing document {doc_id}: {e}")
+        document = db.query(Document).filter(Document.id == doc_id).first()
+        if document:
+            document.status = "failed"
+            db.commit()
+    finally:
+        db.close()
 
 @router.post("/upload")
 def upload_document(
@@ -64,6 +77,6 @@ def upload_document(
     db.commit()
 
     # ---- Run embedding in background ----
-    background_tasks.add_task(process_document, save_path, file.filename)
+    background_tasks.add_task(process_document, save_path, doc_id, file.filename)
 
     return {"status": "uploaded"}
