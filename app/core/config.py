@@ -13,6 +13,13 @@ class Settings(BaseSettings):
     # Database 
     DATABASE_URL: str
 
+    # CORS
+    CORS_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://enterpriserag-ai.vercel.app",
+    ]
+
     class Config:
         env_file = ".env"
 
