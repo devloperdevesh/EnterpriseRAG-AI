@@ -36,6 +36,42 @@ class RAGQuery(BaseModel):
     question: str
 
 
+class ChunkPreviewRequest(BaseModel):
+    text: str
+    chunk_size: int = 500
+    overlap: int = 50
+
+
+class ChunkInfo(BaseModel):
+    index: int
+    text: str
+    start_word: int
+    end_word: int
+    word_count: int
+    overlap_prev: int
+    overlap_next: int
+
+
+class ChunkPreviewResponse(BaseModel):
+    chunks: list[ChunkInfo]
+    total_chunks: int
+    total_words: int
+
+
+@router.post("/chunk-preview", response_model=ChunkPreviewResponse)
+def chunk_preview(data: ChunkPreviewRequest):
+    from app.rag.chunker import chunk_text_with_overlap
+
+    chunks = chunk_text_with_overlap(data.text, data.chunk_size, data.overlap)
+    total_words = sum(c["word_count"] for c in chunks)
+
+    return ChunkPreviewResponse(
+        chunks=[ChunkInfo(**c) for c in chunks],
+        total_chunks=len(chunks),
+        total_words=total_words,
+    )
+
+
 @router.post("/query/stream")
 async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
     """Answer a question over the indexed documents and stream the response.

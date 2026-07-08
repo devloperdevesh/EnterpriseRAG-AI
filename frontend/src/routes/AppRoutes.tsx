@@ -20,6 +20,7 @@ import Signup from "../auth/Signup";
 import Dashboard from "../pages/Dashboard";
 
 import Chat from "../app/pages/Chat";
+import ChunkVisualizer from "../app/pages/ChunkVisualizer";
 import Documents from "../app/pages/Documents";
 import Analytics from "../app/pages/Analytics";
 import Settings from "../app/pages/Settings";
@@ -52,6 +53,8 @@ export default function AppRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/chat" element={<Chat />} />
+
+          <Route path="/chunks" element={<ChunkVisualizer />} />
 
           <Route path="/documents" element={<Documents />} />
 
