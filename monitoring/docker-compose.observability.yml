@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
 
@@ -16,13 +16,31 @@ services:
       - "6379:6379"
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     container_name: prometheus
     ports:
       - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - celery_worker
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
     container_name: grafana
     ports:
       - "3000:3000"
+
+  celery_worker:
+    image: python:3.10-slim
+    container_name: celery_worker
+    working_dir: /app
+    volumes:
+      - ..:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    command: sh -c "pip install -r requirements.txt && celery -A app.workers.celery_worker worker --pool=solo"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
