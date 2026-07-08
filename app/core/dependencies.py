@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer
-from core.security import verify_token
+from app.core.security import verify_token
 
 security = HTTPBearer()
 
