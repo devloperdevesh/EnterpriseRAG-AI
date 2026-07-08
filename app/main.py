@@ -1,54 +1,56 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.config import settings
-from app.core.dependencies import get_current_user
+from core.config import settings
+from core.dependencies import get_current_user
+from db.init_db import init_db
 
-from app.api.v1.auth import router as auth_router
-from app.api.v1.tenants import router as tenants_router
-from app.api.v1.document import router as document_router
-from app.api.v1.rag import router as rag_router
+from api.routes.auth import router as auth_router
+# from api.v1.tenants import router as tenants_router
+# from api.v1.document import router as document_router
+# from api.v1.rag import router as rag_router
 from fastapi import FastAPI
-from prometheus_client import generate_latest
+# from prometheus_client import generate_latest
 from starlette.responses import Response
-from core.middleware import MetricsMiddleware
-from core.middleware_logging import LoggingMiddleware
-from core.rate_limit import init_redis
+# from middleware.middleware import MetricsMiddleware
+# from middleware.middleware_logging import LoggingMiddleware
+# from reliability.rate_limit import init_redis
 from fastapi import Depends, HTTPException
 from core.dependencies import get_current_user
 
-@app.get("/metrics")
-def metrics(user=Depends(get_current_user)):
-    if user.get("sub") != "admin":
-        raise HTTPException(status_code=403, detail="Not allowed")
+app = FastAPI(title=settings.APP_NAME)
 
-    return Response(generate_latest(), media_type="text/plain")
+# @app.get("/metrics")
+# def metrics(user=Depends(get_current_user)):
+#     if user.get("sub") != "admin":
+#         raise HTTPException(status_code=403, detail="Not allowed")
 
-
-
-@app.on_event("startup")
-async def startup():
-    await init_redis()
+#     return Response(generate_latest(), media_type="text/plain")
 
 
-app.add_middleware(LoggingMiddleware)
+
+# @app.on_event("startup")
+# async def startup():
+#     await init_redis()
 
 
-app = FastAPI()
-
-app.add_middleware(MetricsMiddleware)
-
-@app.get("/metrics")
-def metrics():
-    return Response(generate_latest(), media_type="text/plain")
+# app.add_middleware(LoggingMiddleware)
 
 
-from app.db.init_db import init_db
+
+# app.add_middleware(MetricsMiddleware)
+
+# @app.get("/metrics")
+# def metrics():
+#     return Response(generate_latest(), media_type="text/plain")
+
+
+
 
 # ===============================
 # Create FastAPI App
 # ===============================
-app = FastAPI(title=settings.APP_NAME)
+
 
 # ===============================
 # Initialize DB
@@ -76,9 +78,9 @@ app.add_middleware(
 # Routers
 # ===============================
 app.include_router(auth_router)
-app.include_router(tenants_router)
-app.include_router(document_router)
-app.include_router(rag_router)
+# app.include_router(tenants_router)
+# app.include_router(document_router)
+# app.include_router(rag_router)
 
 # ===============================
 # Health Routes
@@ -94,10 +96,11 @@ def health():
 @app.get("/protected")
 def protected(user=Depends(get_current_user)):
     return {
-        "message": "You are authenticated",
+        "message": "You are authenticated, YESS!",
         "user": user,
     }
 
-from core.tracing import setup_tracing
 
-setup_tracing()
+# from observability.tracing import setup_tracing
+
+# setup_tracing()

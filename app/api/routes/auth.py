@@ -1,68 +1,30 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
+from schemes.auth import SignupRequest, LoginRequest, TokenResponse
 from fastapi import APIRouter
-from core.security import create_access_token
-from fastapi import Depends
-from core.rate_limit import limiter
-
-@router.get("/rag-query", dependencies=[Depends(limiter(5, 60))])
-def rag_query():
-    return {"msg": "Rate limited endpoint"}
-
-router = APIRouter()
-
-@router.post("/login")
-def login():
-    # dummy user (replace with DB later)
-    user_data = {"sub": "admin"}
-    
-    token = create_access_token(user_data)
-    
-    return {"access_token": token, "token_type": "bearer"}
-
-from fastapi import Depends
+from core.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+)
 from core.dependencies import get_current_user
+from db.deps import get_db
+from models.user import User
+from fastapi import Depends
+# from core.rate_limit import limiter
+
+router = APIRouter(prefix="/auth", tags=["auth"])
+
+# @router.get("/rag-query", dependencies=[Depends(limiter(5, 60))])
+# def rag_query():
+#     return {"msg": "Rate limited endpoint"}
+
 
 @router.get("/secure")
 def secure_route(user=Depends(get_current_user)):
     return {"message": "Authorized", "user": user}
 
-from app.db.deps import get_db
-from app.models.user import User
-from app.core.security import (
-    hash_password,
-    verify_password,
-    create_access_token,
-)
-
-router = APIRouter(prefix="/auth", tags=["auth"])
-
-
-# ======================
-# Schemas
-# ======================
-
-class SignupRequest(BaseModel):
-    email: EmailStr
-    password: str
-    tenant_id: str            # REQUIRED (DB constraint)
-    role: str = "user"        # default role
-
-
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
-
-
-# ======================
-# Signup
-# ======================
 
 @router.post("/signup", status_code=status.HTTP_201_CREATED)
 def signup(payload: SignupRequest, db: Session = Depends(get_db)):
@@ -81,7 +43,7 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
         email=email,
         hashed_password=hash_password(payload.password),
         tenant_id=payload.tenant_id,   # IMPORTANT
-        role=payload.role,
+        role="user",
     )
 
     db.add(new_user)
@@ -93,10 +55,6 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
         "user_id": new_user.id,
     }
 
-
-# ======================
-# Login
-# ======================
 
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginRequest, db: Session = Depends(get_db)):

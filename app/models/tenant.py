@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String
-from app.db.session import Base
+from db.session import Base
 
 
 class Tenant(Base):

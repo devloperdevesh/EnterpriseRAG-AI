@@ -24,6 +24,7 @@ export default function Signup() {
       return;
     }
 
+    console.log(password.length);
     setLoading(true);
 
     setMessage("");
