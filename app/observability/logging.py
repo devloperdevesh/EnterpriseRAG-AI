@@ -1,5 +1,4 @@
 import logging
-import logging
 import json
 
 class JsonFormatter(logging.Formatter):
@@ -23,12 +22,3 @@ def setup_logging():
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s"
     )
-
-
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
-)
-
-logger = logging.getLogger("app")
