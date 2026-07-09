@@ -1,7 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function StreamingChat() {
   const [text, setText] = useState("");
+
+  useEffect(() => {
+    const eventSource = new EventSource("http://localhost:8000/stream");
+
+    eventSource.onmessage = (event) => {
+      console.log(event.data);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   const fakeStream = async () => {
     let res = "AI response streaming...";
@@ -20,11 +32,4 @@ export default function StreamingChat() {
       <p>{text}</p>
     </div>
   );
-}
-useEffect(() => {
-  const eventSource = new EventSource("http://localhost:8000/stream");
-
-  eventSource.onmessage = (event) => {
-    console.log(event.data);
-  };
-}, []);
+}
