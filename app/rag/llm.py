@@ -1,7 +1,11 @@
+import logging
+
 import requests
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 MODEL_NAME = "llama3:8b"
+
+logger = logging.getLogger(__name__)
 
 
 def generate_answer(context: str, question: str) -> str:
@@ -52,4 +56,5 @@ Answer:
         return "Ollama server not running. Please start `ollama serve`."
 
     except Exception as e:
-        return f"AI generation error: {str(e)}"
+        logger.exception("AI generation failed: %s", e)
+        return "AI generation error. Please try again later."
