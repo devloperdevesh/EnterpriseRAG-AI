@@ -123,34 +123,40 @@ EnterpriseRAG AI explores realtime streaming infrastructure workflows focused on
 * streaming observability systems
 * async stream orchestration
 
-EnterpriseRAG-AI Architecture Vision
+                 Users
+                    |
+                    |
+              API Gateway
+                    |
+                    |
+        Security + Tenant Control
+        (RBAC + Metadata ACL)
+                    |
+                    |
+          Retrieval Control Plane
+                    |
+        -------------------------
+        |                       |
+   FAISS Shards            Cache Layer
+   Failover                Semantic Cache
+        |
+        |
+    Context Optimizer
+    Token Budget
+    Micro Batching
+        |
+        |
+       LLM Gateway
+        |
+        |
+ Observability Platform
+ OpenTelemetry
+ Jaeger
+ Grafana
 
-                    Users
-                       |
-                       |
-                API Gateway
-                       |
-                       |
-        Security Layer (RBAC + Tenant ACL)
-                       |
-                       |
-          Retrieval Engine (FAISS + Metadata)
-                       |
-                       |
-        Optimization Layer
-        - Semantic Cache
-        - Token Budget Control
-        - Micro Batching
-                       |
-                       |
-              LLM Gateway
-                       |
-                       |
-        Observability Layer
-        - OpenTelemetry
-        - Jaeger
-        - Grafana
 
+Future:
+eBPF Kernel Telemetry Layer
 
 Future Research:
 - eBPF Kernel-Level AI Observability
