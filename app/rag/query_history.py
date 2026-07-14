@@ -48,59 +48,75 @@ async def record_query(
     """Persist one query record to Redis (newest-first) and return it.
 
     Best-effort: any Redis error *or* a timeout is swallowed so a history
-    outage can never fail -- or slow down -- an otherwise-successful RAG query.
-    Callers typically dispatch this fire-and-forget.
+    write never blocks the query response path.
     """
     record = {
-        "id": uuid.uuid4().hex,
+        "id": str(uuid.uuid4()),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "query": query,
         "answer_summary": answer_summary,
         "chunk_count": chunk_count,
         "top_scores": top_scores,
         "source_documents": source_documents,
-        "retrieval_latency_ms": retrieval_latency_ms,
-        "llm_latency_ms": llm_latency_ms,
-        "total_latency_ms": total_latency_ms,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "retrieval_latency_ms": round(retrieval_latency_ms, 2),
+        "llm_latency_ms": round(llm_latency_ms, 2),
+        "total_latency_ms": round(total_latency_ms, 2),
     }
 
-    key = _key(user_id)
+    async def _write() -> None:
+        redis = await get_redis()
+        key = _key(user_id)
+        serialised = json.dumps(record)
+        pipeline = redis.pipeline()
+        pipeline.lpush(key, serialised)
+        pipeline.ltrim(key, 0, MAX_HISTORY_PER_USER - 1)
+        pipeline.expire(key, HISTORY_TTL_SECONDS)
+        await pipeline.execute()
+
     try:
-        redis = get_redis()
-        # Single round-trip: prepend, trim to cap, refresh TTL.
-        pipe = redis.pipeline()
-        pipe.lpush(key, json.dumps(record))
-        pipe.ltrim(key, 0, MAX_HISTORY_PER_USER - 1)
-        pipe.expire(key, HISTORY_TTL_SECONDS)
-        await asyncio.wait_for(pipe.execute(), timeout=HISTORY_OP_TIMEOUT_SECONDS)
-    except Exception:  # pragma: no cover - history is observability-only
-        # Intentionally silent: never let history break the query path.
-        pass
+        await asyncio.wait_for(_write(), timeout=HISTORY_OP_TIMEOUT_SECONDS)
+    except Exception:  # noqa: BLE001
+        pass  # best-effort; do not propagate
 
     return record
 
 
-async def get_history(user_id: Any, limit: int = MAX_HISTORY_PER_USER) -> list[dict]:
+async def get_history(user_id: Any, *, limit: int = MAX_HISTORY_PER_USER) -> list[dict]:
     """Return up to ``limit`` most-recent query records for ``user_id``.
 
-    Returns an empty list if Redis is unavailable, too slow, or the user has
-    no history.
+    Best-effort: returns an empty list on any Redis failure or timeout.
+
+    Args:
+        user_id: The authenticated user's ID.
+        limit: Maximum number of records to return.
+
+    Returns:
+        A list of query record dicts, newest-first. Empty list on error.
     """
-    limit = max(1, min(limit, MAX_HISTORY_PER_USER))
+    async def _read() -> list[dict]:
+        redis = await get_redis()
+        raw_entries = await redis.lrange(_key(user_id), 0, limit - 1)
+        return [json.loads(e) for e in raw_entries]
+
     try:
-        redis = get_redis()
-        raw_entries = await asyncio.wait_for(
-            redis.lrange(_key(user_id), 0, limit - 1),
-            timeout=HISTORY_OP_TIMEOUT_SECONDS,
-        )
-    except Exception:  # pragma: no cover - history is observability-only
+        return await asyncio.wait_for(_read(), timeout=HISTORY_OP_TIMEOUT_SECONDS)
+    except Exception:  # noqa: BLE001
         return []
 
-    history: list[dict] = []
-    for raw in raw_entries:
-        try:
-            history.append(json.loads(raw))
-        except (json.JSONDecodeError, TypeError):
-            # Skip corrupt entries rather than failing the whole response.
-            continue
-    return history
+
+async def delete_history(user_id: Any) -> None:
+    """Delete all stored query history for ``user_id``.
+
+    Best-effort: silently ignores Redis failures or timeouts.
+
+    Args:
+        user_id: The authenticated user's ID whose history to delete.
+    """
+    async def _delete() -> None:
+        redis = await get_redis()
+        await redis.delete(_key(user_id))
+
+    try:
+        await asyncio.wait_for(_delete(), timeout=HISTORY_OP_TIMEOUT_SECONDS)
+    except Exception:  # noqa: BLE001
+        pass
