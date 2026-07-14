@@ -5,7 +5,7 @@ import Topbar from "./Topbar";
 
 export default function AppLayout() {
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-[var(--bg-main)] text-[var(--text-main)]">
       {/* Sidebar */}
       <Sidebar />
 
