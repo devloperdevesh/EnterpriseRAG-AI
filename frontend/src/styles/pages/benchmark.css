@@ -7,9 +7,7 @@
         120px 24px;
 
     background:
-        linear-gradient(to bottom,
-            #f8fbff,
-            #ffffff);
+        var(--bg-main);
 }
 
 /* =========================================================
@@ -68,7 +66,7 @@
 .benchmark-title {
     margin-top: 24px;
 
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 56px;
     font-weight: 750;
@@ -85,7 +83,7 @@
 .benchmark-description {
     margin-top: 24px;
 
-    color: #64748b;
+    color: var(--text-muted);
 
     font-size: 19px;
 
@@ -115,10 +113,10 @@
 
     border-radius: 28px;
 
-    background: white;
+    background: var(--bg-surface);
 
     border:
-        1px solid #e5e7eb;
+        1px solid var(--border);
 
     box-shadow:
         0 14px 32px rgba(15, 23, 42, 0.05);
@@ -140,7 +138,7 @@
 ========================================================= */
 
 .benchmark-card-title {
-    color: #64748b;
+    color: var(--text-muted);
 
     font-size: 12px;
     font-weight: 600;
@@ -157,7 +155,7 @@
 .benchmark-card-value {
     margin-top: 18px;
 
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 42px;
     font-weight: 750;
@@ -172,7 +170,7 @@
 .benchmark-card-description {
     margin-top: 18px;
 
-    color: #64748b;
+    color: var(--text-muted);
 
     font-size: 15px;
 

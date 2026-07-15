@@ -6,10 +6,10 @@
     width: 100%;
 
     background:
-        #ffffff;
+        var(--bg-surface);
 
     border-top:
-        1px solid #e5e7eb;
+        1px solid var(--border);
 
     margin-top: 120px;
 }
@@ -88,7 +88,7 @@
 ========================================================= */
 
 .footer-brand-title {
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 24px;
     font-weight: 760;
@@ -105,7 +105,7 @@
 .footer-brand-description {
     margin-top: 16px;
 
-    color: #64748b;
+    color: var(--text-muted);
 
     font-size: 15px;
 
@@ -145,7 +145,7 @@
 ========================================================= */
 
 .footer-column h4 {
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 14px;
     font-weight: 700;
@@ -161,7 +161,7 @@
 
 .footer-column a,
 .footer-column span {
-    color: #64748b;
+    color: var(--text-muted);
 
     text-decoration: none;
 
@@ -195,7 +195,7 @@
     width: 100%;
 
     border-top:
-        1px solid #e5e7eb;
+        1px solid var(--border);
 
     padding:
         24px 32px;
@@ -209,7 +209,7 @@
 
     gap: 12px;
 
-    color: #94a3b8;
+    color: var(--text-soft);
 
     font-size: 13px;
 

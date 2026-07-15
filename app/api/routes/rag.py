@@ -1,15 +1,26 @@
 import asyncio
+from contextlib import nullcontext
 from time import perf_counter
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
-from opentelemetry import trace
+from pydantic import BaseModel, Field
+
+try:
+    from opentelemetry import trace
+except ImportError:  # pragma: no cover - observability is optional in tests
+    class _NoopTracer:
+        def start_as_current_span(self, *_args, **_kwargs):
+            return nullcontext()
+
+    class _NoopTrace:
+        @staticmethod
+        def get_tracer(_name):
+            return _NoopTracer()
+
+    trace = _NoopTrace()
 
 from app.core.dependencies import get_current_user
-from app.rag.embeddings import generate_embedding
-from app.rag.vector_store import search_embedding_scored
-from app.rag.llm import generate_answer
 from app.rag.query_history import record_query, get_history, MAX_HISTORY_PER_USER
 
 router = APIRouter(prefix="/rag", tags=["rag"])
@@ -34,7 +45,7 @@ def _dispatch_background(coro) -> None:
 
 
 class RAGQuery(BaseModel):
-    question: str
+    question: str = Field(..., max_length=500)
 
 
 @router.post("/query/stream")
@@ -46,6 +57,9 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
     persisted to the per-user Redis query history for later inspection.
     """
     question = data.question
+    from app.rag.embeddings import generate_embedding
+    from app.rag.llm import generate_answer
+    from app.rag.vector_store import search_embedding_scored
 
     with tracer.start_as_current_span("rag-query"):
         # ---- Retrieval phase: embedding + vector search ----
@@ -62,8 +76,7 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
 
             return StreamingResponse(empty_stream(), media_type="text/plain")
 
-        # Use the single most relevant chunk as context (unchanged behaviour).
-        context = results[0]["text"]
+        context = "\n\n".join(chunk["text"] for chunk in results)
 
         # ---- LLM phase: answer generation ----
         llm_start = perf_counter()

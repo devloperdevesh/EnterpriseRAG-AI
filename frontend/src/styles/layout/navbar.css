@@ -10,10 +10,10 @@
 
     width: 100%;
 
-    background: #ffffff;
+    background: var(--bg-surface);
 
     border-bottom:
-        1px solid #e5e7eb;
+        1px solid var(--border);
 
     box-shadow:
         0 1px 2px rgba(15, 23, 42, 0.04);
@@ -65,7 +65,7 @@
 }
 
 .logo-title {
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 16px;
     font-weight: 750;
@@ -92,7 +92,7 @@
 .navbar-links a {
     position: relative;
 
-    color: #475569;
+    color: var(--text-muted);
 
     text-decoration: none;
 
@@ -104,7 +104,7 @@
 }
 
 .navbar-links a:hover {
-    color: #0f172a;
+    color: var(--text-main);
 }
 
 /* =========================================================
@@ -152,7 +152,7 @@
 ========================================================= */
 
 .login-link {
-    color: #475569;
+    color: var(--text-muted);
 
     text-decoration: none;
 
@@ -164,7 +164,7 @@
 }
 
 .login-link:hover {
-    color: #0f172a;
+    color: var(--text-main);
 }
 
 /* =========================================================
@@ -313,4 +313,36 @@
             8px 10px;
     }
 
+}
+
+/* =========================================================
+   THEME TOGGLE BUTTON
+========================================================= */
+
+.theme-toggle-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--bg-main);
+    transform: translateY(-1px);
+}
+
+.theme-toggle-icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

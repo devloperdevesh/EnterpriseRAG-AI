@@ -1,3 +1,4 @@
+import os
 from fastapi import Request, HTTPException
 from redis.asyncio import Redis
 from fastapi_limiter import FastAPILimiter
@@ -7,7 +8,8 @@ redis = None
 
 async def init_redis():
     global redis
-    redis = Redis(host="localhost", port=6379, db=0)
+    redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+    redis = Redis.from_url(redis_url)
     await FastAPILimiter.init(redis)
 
 def limiter(times: int, seconds: int):
