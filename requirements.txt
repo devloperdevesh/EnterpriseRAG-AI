@@ -1,20 +1,19 @@
-fastapi
+fastapi>=0.111.0
 uvicorn[standard]
 
 pydantic
 pydantic-settings
-python-jose
+PyJWT>=2.8.0
 
 sqlalchemy
 psycopg2-binary>=2.9
 asyncpg
 redis
 
-python-multipart
+python-multipart>=0.0.9
 python-dotenv
-requests
-gunicorn
-PyPDF2
+requests>=2.32.2
+gunicorn>=22.0.0
 prometheus-client
 pypdf>=4.0.0
 python-docx>=1.1.0
@@ -24,4 +23,4 @@ torch==2.7.1
 pydantic[email]
 
 passlib==1.7.4
-bcrypt==3.2.2
+bcrypt>=4.1.3

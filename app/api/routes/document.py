@@ -2,7 +2,7 @@ import os
 import shutil
 import uuid
 
-import PyPDF2
+import pypdf
 from fastapi import APIRouter, Depends, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
 
@@ -25,7 +25,7 @@ def process_document(filepath: str, doc_id: str, source_name: str | None = None)
     db: Session = SessionLocal()
     try:
         # ---- Read PDF ----
-        reader = PyPDF2.PdfReader(filepath)
+        reader = pypdf.PdfReader(filepath)
         full_text = ""
         for page in reader.pages:
             text = page.extract_text()
