@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { type FormEvent, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
@@ -9,7 +9,9 @@ import "../styles/pages/auth.css";
 export default function Login() {
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const location = useLocation();
+
+  const { isAuthenticated, login } = useAuth();
 
   const [email, setEmail] = useState("");
 
@@ -19,7 +21,20 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
 
-  const submit = async () => {
+  const redirectTo =
+    new URLSearchParams(location.search).get("next") ||
+    (location.state as { from?: { pathname?: string } } | null)?.from
+      ?.pathname ||
+    "/dashboard";
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirectTo, { replace: true });
+    }
+  }, [isAuthenticated, navigate, redirectTo]);
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setLoading(true);
 
     setError("");
@@ -32,7 +47,7 @@ export default function Login() {
 
       login(res.data.access_token);
 
-      navigate("/dashboard");
+      navigate(redirectTo, { replace: true });
     } catch {
       setError("Invalid email or password");
     } finally {
@@ -60,12 +75,13 @@ export default function Login() {
         {/* =========================
             INPUTS
         ========================= */}
-        <div className="auth-form">
+        <form className="auth-form" onSubmit={submit}>
           <input
             type="email"
             placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <input
@@ -73,14 +89,15 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           {error && <p className="auth-error">{error}</p>}
 
-          <button onClick={submit} disabled={loading} className="auth-button">
+          <button type="submit" disabled={loading} className="auth-button">
             {loading ? "Signing In..." : "Access Platform"}
           </button>
-        </div>
+        </form>
 
         {/* =========================
             FOOTER
