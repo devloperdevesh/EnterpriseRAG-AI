@@ -42,11 +42,9 @@ body {
         sans-serif;
 
     background:
-        linear-gradient(to bottom,
-            #ffffff,
-            #f8fbff);
+        var(--bg-main);
 
-    color: #0f172a;
+    color: var(--text-main);
 
     overflow-x: hidden;
 
@@ -341,7 +339,7 @@ button {
         1px solid var(--border);
 
     background:
-        rgba(255, 255, 255, 0.82);
+        var(--bg-surface);
 
     color:
         var(--text-main);
@@ -367,10 +365,10 @@ button {
 
 .card {
     background:
-        rgba(255, 255, 255, 0.82);
+        var(--bg-surface);
 
     border:
-        1px solid rgba(229, 231, 235, 0.9);
+        1px solid var(--border);
 
     border-radius:
         var(--radius-lg);
@@ -398,13 +396,13 @@ button {
 
 .glass {
     background:
-        rgba(255, 255, 255, 0.74);
+        var(--bg-surface);
 
     backdrop-filter:
         blur(18px);
 
     border:
-        1px solid rgba(255, 255, 255, 0.7);
+        1px solid var(--border);
 
     border-radius:
         var(--radius-lg);
@@ -431,7 +429,7 @@ textarea {
         1px solid var(--border);
 
     background:
-        white;
+        var(--bg-surface);
 
     color:
         var(--text-main);
@@ -562,3 +560,22 @@ textarea:focus {
     }
 
 }
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+.dark {
+    --bg-main: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-dark: #ffffff;
+
+    --text-main: #f8fbff;
+    --text-muted: #94a3b8;
+    --text-soft: #64748b;
+
+    --border: #334155;
+
+    --shadow-soft: 0 6px 20px rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+

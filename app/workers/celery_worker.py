@@ -1,8 +1,9 @@
+import os
 from celery import Celery
 
 celery = Celery(
     "worker",
-    broker="redis://localhost:6379/0"
+    broker=os.getenv("REDIS_URL", "redis://localhost:6379/0")
 )
 
 @celery.task

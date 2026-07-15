@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import "../../styles/layout/navbar.css";
-
+import ThemeToggle from "../ThemeToggle";
 export default function Navbar() {
   const isLoggedIn = !!localStorage.getItem("token");
 
@@ -41,7 +41,9 @@ export default function Navbar() {
         {/* =========================
             ACTIONS
         ========================= */}
-        <div className="navbar-actions">
+        <div className="navbar-actions flex items-center gap-4">
+          <ThemeToggle />
+
           {!isLoggedIn ? (
             <>
               <Link to="/login" className="login-link">

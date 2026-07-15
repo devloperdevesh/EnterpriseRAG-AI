@@ -1,5 +1,4 @@
 import logging
-import logging
 import json
 
 class JsonFormatter(logging.Formatter):
@@ -12,23 +11,18 @@ class JsonFormatter(logging.Formatter):
         return json.dumps(log_record)
 
 logger = logging.getLogger("app")
-handler = logging.StreamHandler()
-handler.setFormatter(JsonFormatter())
-
-logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    handler.setFormatter(JsonFormatter())
+    logger.addHandler(handler)
+
 def setup_logging():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s"
-    )
-
-
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
-)
-
-logger = logging.getLogger("app")
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    for h in root_logger.handlers[:]:
+        root_logger.removeHandler(h)
+    handler = logging.StreamHandler()
+    handler.setFormatter(JsonFormatter())
+    root_logger.addHandler(handler)

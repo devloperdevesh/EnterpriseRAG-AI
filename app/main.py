@@ -13,6 +13,7 @@ from app.core.dependencies import get_current_user
 from app.db.init_db import init_db
 from app.middleware.middleware import MetricsMiddleware
 from app.middleware.middleware_logging import LoggingMiddleware
+from app.reliability.rate_limit import init_redis
 
 try:
     from app.observability.tracing import setup_tracing
@@ -48,6 +49,11 @@ setup_tracing()
 @app.on_event("startup")
 def startup_event():
     init_db()
+
+
+@app.on_event("startup")
+async def startup_redis():
+    await init_redis()
 
 
 @app.get("/")

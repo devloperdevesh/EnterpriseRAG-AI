@@ -79,7 +79,40 @@ export default function QueryHistoryPanel({
 
       {open && (
         <div className="qh-body">
-          {error && <p className="qh-empty">{error}</p>}
+          {/* ENHANCEMENT: MORE HELPFUL ERROR STATE WITH RETRY */}
+          {error && (
+            <div className="qh-empty error-fallback-state">
+              <p> {error}</p>
+              <button 
+                className="btn primary qh-retry-btn" 
+                onClick={loadHistory}
+                disabled={loading}
+                style={{ 
+                  marginTop: "12px", 
+                  padding: "6px 14px", 
+                  fontSize: "13px",
+                  backgroundColor: "#000000",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontWeight: "500"
+                }}
+              >
+                {loading ? "Reconnecting..." : "Retry Connection"}
+              </button>
+            </div>
+          )}
+
+          {/* ENHANCEMENT: VISUAL LOADING SKELETON */}
+          {loading && !error && entries.length === 0 && (
+            <div className="qh-skeleton-container" style={{ opacity: 0.6, padding: "8px" }}>
+              <p className="qh-empty">Verifying connection pipeline...</p>
+              {[1, 2, 3].map((i) => (
+                <div key={i} style={{ height: "34px", background: "rgba(0,0,0,0.05)", borderRadius: "4px", margin: "6px 0" }} />
+              ))}
+            </div>
+          )}
           {!error && !loading && entries.length === 0 && (
             <p className="qh-empty">No queries yet.</p>
           )}

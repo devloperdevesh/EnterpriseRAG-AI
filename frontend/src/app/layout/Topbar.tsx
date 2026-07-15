@@ -1,6 +1,7 @@
 import "./../../styles/layout/topbar.css";
 import { useNavigate } from "react-router-dom";
 
+import ThemeToggle from "../../components/ThemeToggle";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Topbar() {
@@ -13,11 +14,14 @@ export default function Topbar() {
   };
 
   return (
-    <div className="topbar">
+    <div className="topbar flex items-center justify-between">
       <input placeholder="Search..." />
-      <button className="btn primary" onClick={handleLogout}>
-        Logout
-      </button>
+      <div className="flex items-center gap-4">
+        <ThemeToggle />
+        <button className="btn primary" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ from time import perf_counter
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 try:
     from opentelemetry import trace
@@ -44,7 +44,7 @@ def _dispatch_background(coro) -> None:
 
 
 class RAGQuery(BaseModel):
-    question: str
+    question: str = Field(..., max_length=500)
 
 
 @router.post("/query/stream")
@@ -75,8 +75,7 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
 
             return StreamingResponse(empty_stream(), media_type="text/plain")
 
-        # Use the single most relevant chunk as context (unchanged behaviour).
-        context = results[0]["text"]
+        context = "\n\n".join(chunk["text"] for chunk in results)
 
         # ---- LLM phase: answer generation ----
         llm_start = perf_counter()

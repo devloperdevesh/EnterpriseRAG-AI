@@ -7,9 +7,7 @@
         140px 24px;
 
     background:
-        linear-gradient(to bottom,
-            #ffffff,
-            #f8fbff);
+        var(--bg-main);
 
     border-top:
         1px solid #e5e7eb;
@@ -61,7 +59,7 @@
 .cta-title {
     margin-top: 28px;
 
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 64px;
     font-weight: 760;
@@ -81,7 +79,7 @@
     margin:
         28px auto 0;
 
-    color: #64748b;
+    color: var(--text-muted);
 
     font-size: 20px;
 
@@ -163,11 +161,11 @@
     border-radius: 18px;
 
     border:
-        1px solid #dbe4f0;
+        1px solid var(--border);
 
-    background: white;
+    background: var(--bg-surface);
 
-    color: #0f172a;
+    color: var(--text-main);
 
     text-decoration: none;
 
@@ -180,7 +178,7 @@
 }
 
 .secondary-cta-btn:hover {
-    background: #f8fafc;
+    background: var(--bg-main);
 
     transform: translateY(-2px);
 }
@@ -214,7 +212,7 @@
 }
 
 .cta-metric-value {
-    color: #0f172a;
+    color: var(--text-main);
 
     font-size: 28px;
     font-weight: 760;
@@ -225,7 +223,7 @@
 .cta-metric-label {
     margin-top: 10px;
 
-    color: #64748b;
+    color: var(--text-muted);
 
     font-size: 13px;
 }

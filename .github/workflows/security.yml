@@ -1,0 +1,152 @@
+name: Security & Dependency Scanning
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # Run every Monday at 08:00 UTC for proactive vulnerability detection.
+    - cron: '0 8 * * 1'
+
+jobs:
+  # -----------------------------------------------------------------------
+  # Job 1: Static Application Security Testing (SAST) with Bandit
+  # Scans Python source code for common security anti-patterns.
+  # -----------------------------------------------------------------------
+  bandit-sast:
+    name: Bandit SAST
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Bandit
+        run: pip install bandit[toml]
+
+      - name: Run Bandit
+        # -r  recursive scan
+        # -ll report medium and high severity only (suppress low noise)
+        # -x  exclude virtual env and test directories
+        run: |
+          bandit -r app/ \
+            -ll \
+            -x .venv,tests \
+            --format json \
+            --output bandit-report.json || true
+
+      - name: Upload Bandit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-sast-report
+          path: bandit-report.json
+          retention-days: 30
+
+      - name: Fail on high-severity findings
+        # Re-run without --format json so the console shows readable output,
+        # and exit with a non-zero code only for HIGH severity issues.
+        run: |
+          bandit -r app/ \
+            -lll \
+            -x .venv,tests
+
+  # -----------------------------------------------------------------------
+  # Job 2: Dependency vulnerability scanning with pip-audit
+  # Checks requirements.txt against the OSV / PyPI Advisory Database.
+  # -----------------------------------------------------------------------
+  pip-audit:
+    name: pip-audit Dependency Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Audit runtime dependencies
+        run: |
+          pip-audit \
+            -r requirements.txt \
+            --output pip-audit-report.json \
+            --format json || true
+
+      - name: Audit dev dependencies
+        run: |
+          pip-audit \
+            -r requirements-dev.txt \
+            --output pip-audit-dev-report.json \
+            --format json || true
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pip-audit-reports
+          path: |
+            pip-audit-report.json
+            pip-audit-dev-report.json
+          retention-days: 30
+
+      - name: Fail on known vulnerabilities (runtime deps)
+        # Re-run without --output so the console output is visible.
+        # This step fails the CI if any CVE is found in runtime deps.
+        run: |
+          pip-audit -r requirements.txt
+
+  # -----------------------------------------------------------------------
+  # Job 3: Secret scanning with Gitleaks
+  # Detects accidentally committed secrets, tokens, and API keys.
+  # -----------------------------------------------------------------------
+  gitleaks:
+    name: Gitleaks Secret Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history required for accurate secret scanning.
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # -----------------------------------------------------------------------
+  # Job 4: Aggregate security gate
+  # Acts as the single required status check for branch protection rules.
+  # Only passes when all three scan jobs pass.
+  # -----------------------------------------------------------------------
+  security-gate:
+    name: Security Gate
+    needs: [bandit-sast, pip-audit, gitleaks]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check all security jobs passed
+        run: |
+          if [[ "${{ needs.bandit-sast.result }}" != "success" ||
+                "${{ needs.pip-audit.result }}" != "success" ||
+                "${{ needs.gitleaks.result }}" != "success" ]]; then
+            echo "One or more security checks failed."
+            exit 1
+          fi
+          echo "All security checks passed."
