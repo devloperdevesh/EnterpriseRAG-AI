@@ -422,11 +422,8 @@ EnterpriseRAG AI actively encourages contributor collaboration around:
 * observability-first backend systems
 
 ---
+## Contributors
 
-## Devesh Chauhan
-
-Backend Systems Engineer focused on Distributed Systems, Observability, AI Infrastructure, and Scalable Backend Architectures.
-
-- Project Admin & Mentor, GSSoC
-- Open Source Contributor
-- Distributed Systems & AI Infrastructure Enthusiast
+<a href="https://github.com/devloperdevesh/FaultPlane/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=devloperdevesh/FaultPlane" />
+</a>
