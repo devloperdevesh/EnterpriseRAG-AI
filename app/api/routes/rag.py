@@ -23,6 +23,7 @@ except ImportError:  # pragma: no cover - observability is optional in tests
 from app.core.dependencies import get_current_user
 from app.rag.query_history import record_query, get_history, MAX_HISTORY_PER_USER
 
+router = APIRouter(prefix="/rag", tags=["rag"])
 tracer = trace.get_tracer(__name__)
 
 router = APIRouter(prefix="/rag", tags=["rag"])

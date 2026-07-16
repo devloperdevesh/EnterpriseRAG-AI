@@ -23,6 +23,8 @@ except ImportError:  # pragma: no cover - tracing is optional in local/test envs
 
 app = FastAPI(title=settings.APP_NAME)
 
+setup_tracing()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -37,23 +39,17 @@ app.add_middleware(
 app.add_middleware(LoggingMiddleware)
 app.add_middleware(MetricsMiddleware)
 
+@app.on_event("startup")
+async def startup_event():
+    init_db()
+    await init_redis()
+
+
 app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
-
-setup_tracing()
-
-
-@app.on_event("startup")
-def startup_event():
-    init_db()
-
-
-@app.on_event("startup")
-async def startup_redis():
-    await init_redis()
 
 
 @app.get("/")
@@ -67,7 +63,12 @@ def health():
 
 
 @app.get("/metrics")
-def metrics(user=Depends(get_current_user)):
+def metrics():
+    return Response(generate_latest(), media_type="text/plain")
+
+
+@app.get("/admin/metrics")
+def protected_metrics(user=Depends(get_current_user)):
     if user.get("role") != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -83,14 +84,3 @@ def protected(user=Depends(get_current_user)):
         "message": "You are authenticated",
         "user": user,
     }
-
-
-@app.get("/admin/metrics")
-def protected_metrics(user=Depends(get_current_user)):
-    if user.get("role") != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not allowed",
-        )
-
-    return Response(generate_latest(), media_type="text/plain")

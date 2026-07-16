@@ -1,4 +1,4 @@
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from app.rag.embeddings import generate_embedding
 from app.rag.vector_store import add_embedding
 

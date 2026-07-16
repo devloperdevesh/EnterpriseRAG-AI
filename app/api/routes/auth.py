@@ -7,9 +7,9 @@ from app.core.security import hash_password
 from app.db.deps import get_db
 from app.models.user import User
 from app.services.auth_service import authenticate_user, create_user_access_token
+from app.reliability.rate_limit import limiter
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
 
 class SignupRequest(BaseModel):
     email: EmailStr
@@ -76,6 +76,19 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         "token_type": "bearer",
     }
 
+
+# ======================
+# Observability / Extra Routes
+# ======================
+
+@router.get("/rag-query", dependencies=[Depends(limiter(5, 60))])
+def rag_query():
+    return {"msg": "Rate limited endpoint"}
+
+
+@router.get("/secure")
+def secure_route(user=Depends(get_current_user)):
+    return {"message": "Authorized", "user": user}
 
 @router.get("/me", response_model=SessionResponse)
 def read_session(current_user=Depends(get_current_user)):
