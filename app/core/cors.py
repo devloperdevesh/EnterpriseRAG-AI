@@ -1,6 +1,9 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
+from app.core.config import settings
+
+
 class CustomCORSMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         if request.method == "OPTIONS":
@@ -8,7 +11,10 @@ class CustomCORSMiddleware(BaseHTTPMiddleware):
         else:
             response = await call_next(request)
 
-        response.headers["Access-Control-Allow-Origin"] = "https://enterpriserag-ai.vercel.app"
+        origin = request.headers.get("origin", "")
+        allowed_origins = settings.cors_origins_list
+        if origin in allowed_origins:
+            response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
         response.headers["Access-Control-Allow-Headers"] = "*"
         response.headers["Access-Control-Allow-Credentials"] = "true"
