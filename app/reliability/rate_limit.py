@@ -1,4 +1,3 @@
-from fastapi import Request, HTTPException
 from redis.asyncio import Redis
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
