@@ -3,6 +3,9 @@ import "../../styles/pages/home.css";
 export default function Hero() {
   return (
     <section className="hero-section">
+      <div className="hero-background">
+      </div>
+
       <div className="hero-container">
         {/* =========================
             BRAND BADGE
