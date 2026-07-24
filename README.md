@@ -1,352 +1,330 @@
-# EnterpriseRAG-AI
 
-## Observability-First AI Infrastructure Platform
+<p align="center">
+  <img src="./banner.png" alt="EnterpriseRAG-AI Linux-Native eBPF-Powered Security & Governance Mesh Banner" width="100%">
+</p>
 
-EnterpriseRAG-AI is an observability-driven AI infrastructure platform focused on Retrieval-Augmented Generation (RAG), distributed tracing, semantic retrieval, async orchestration, and scalable backend execution.
+<p align="center">
+  The Linux-Native, eBPF-Powered Security & Governance Mesh for AI Agent Workloads
+</p>
 
-The project explores modern infrastructure engineering patterns around request lifecycle visibility, telemetry pipelines, retrieval diagnostics, reliability engineering, streaming systems, and distributed backend architectures.
+<p align="center">
 
-### Key Metrics
+[![CI](https://github.com/devloperdevesh/EnterpriseRAG-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/devloperdevesh/EnterpriseRAG-AI/actions)
 
-| Metric          | Value                  |
-| --------------- | ---------------------- |
-| Throughput      | ~850 Requests/sec      |
-| p95 Latency     | ~480ms                 |
-| Architecture    | Async FastAPI Services |
-| Retrieval Layer | FAISS Semantic Search  |
-| Cache Layer     | Redis                  |
-| Database        | PostgreSQL             |
-| Observability   | OpenTelemetry + Jaeger |
-| Metrics         | Prometheus + Grafana   |
+[![License](https://img.shields.io/github/license/devloperdevesh/EnterpriseRAG-AI)](LICENSE)
 
-### Engineering Focus
+[![Stars](https://img.shields.io/github/stars/devloperdevesh/EnterpriseRAG-AI)](https://github.com/devloperdevesh/EnterpriseRAG-AI)
 
-* Distributed AI Infrastructure
-* Retrieval-Augmented Generation
-* Async Backend Systems
-* Distributed Tracing
-* Infrastructure Telemetry
-* Streaming Pipelines
-* Reliability Engineering
-* Performance Optimization
-* Semantic Retrieval Systems
-* Queue-Oriented Orchestration
+[![Contributors](https://img.shields.io/github/contributors/devloperdevesh/EnterpriseRAG-AI)](https://github.com/devloperdevesh/EnterpriseRAG-AI/graphs/contributors)
 
-📈 Detailed performance reports, latency analysis, throughput benchmarks, and infrastructure diagnostics:
-
-**[View Performance Benchmarks](./PERFORMANCE_BENCHMARKS.md)**
-
-
-
-# Infrastructure Vision
-
-EnterpriseRAG AI is evolving toward an infrastructure-oriented AI systems engineering platform where retrieval workflows, request execution pipelines, distributed traces, and streaming inference systems are fully observable and visually explorable.
-
-The long-term engineering direction focuses on:
-
-* realtime retrieval diagnostics
-* request lifecycle visibility
-* distributed observability workflows
-* infrastructure telemetry pipelines
-* queue-driven execution systems
-* streaming-aware inference orchestration
-* scalable semantic retrieval infrastructure
-* backend reliability experimentation
-* infrastructure debugging workflows
-* AI systems instrumentation
+</p>
 
 ---
 
-# Current Development Status
+# Overview
 
-| Infrastructure Area                  | Status              |
-| ------------------------------------ | ------------------- |
-| Landing Page Infrastructure UI       | Completed           |
-| Async Backend Architecture           | In Progress         |
-| Semantic Retrieval Pipeline          | Prototype           |
-| Observability Instrumentation        | Partial Integration |
-| Realtime Streaming Infrastructure    | In Progress         |
-| Infrastructure Metrics Dashboard     | Under Development   |
-| Distributed Tracing Workflows        | Experimental        |
-| Queue-Oriented Execution Systems     | Planned             |
-| Reliability Engineering Workflows    | Planned             |
-| Kubernetes Deployment Infrastructure | Planned             |
+EnterpriseRAG-AI is an open-source AI infrastructure platform designed to make enterprise AI workloads secure, observable, and reliable.
 
----
+Modern AI applications require more than powerful language models. Production AI systems need reliable retrieval, secure data boundaries, complete execution visibility, and infrastructure-level reliability.
 
-# Core Engineering Focus Areas
+EnterpriseRAG-AI provides an infrastructure layer for building and operating production-grade Retrieval-Augmented Generation systems and AI agent workloads.
 
-## Distributed Retrieval Infrastructure
+The platform combines:
 
-EnterpriseRAG AI experiments with distributed retrieval execution workflows involving:
+- Retrieval infrastructure
+- Enterprise security controls
+- Distributed observability
+- AI execution diagnostics
+- Reliability engineering workflows
 
-* semantic chunk retrieval
-* vector similarity search
-* retrieval latency instrumentation
-* context assembly pipelines
-* retrieval diagnostics
-* async retrieval execution
-* retrieval observability workflows
-* realtime retrieval telemetry
+into a unified AI operations platform.
 
 ---
 
-## Observability-Driven Backend Systems
+# Why EnterpriseRAG-AI?
 
-The platform heavily emphasizes infrastructure observability and backend visibility across the request lifecycle.
+Building reliable AI systems introduces several engineering challenges.
 
-Current observability exploration areas include:
+## Retrieval Reliability
 
-* OpenTelemetry instrumentation
-* Jaeger distributed tracing
-* Prometheus metrics aggregation
-* Grafana infrastructure visualization
-* request execution diagnostics
-* latency analytics
-* streaming-aware instrumentation
-* infrastructure telemetry pipelines
-* queue execution visibility
-* backend workflow tracing
+Traditional retrieval systems based only on semantic similarity can struggle with:
+
+- Technical identifiers
+- Exact keyword matching
+- Enterprise terminology
+- Structured information
+- Compliance-heavy documents
+
+EnterpriseRAG-AI focuses on improving retrieval quality through intelligent retrieval workflows, ranking strategies, metadata-aware processing, and contextual analysis.
 
 ---
 
-## Streaming Infrastructure Workflows
+## AI System Observability
 
-EnterpriseRAG AI explores realtime streaming infrastructure workflows focused on:
+Modern AI workloads are difficult to debug without complete execution visibility.
 
-* SSE/WebSocket streaming
-* token-level streaming visibility
-* stream lifecycle diagnostics
-* latency-aware streaming pipelines
-* concurrent stream handling
-* realtime infrastructure events
-* streaming observability systems
-* async stream orchestration
+Teams need to understand:
 
-                 Users
-                    |
-                    |
-              API Gateway
-                    |
-                    |
-        Security + Tenant Control
-        (RBAC + Metadata ACL)
-                    |
-                    |
-          Retrieval Control Plane
-                    |
-        -------------------------
-        |                       |
-   FAISS Shards            Cache Layer
-   Failover                Semantic Cache
-        |
-        |
-    Context Optimizer
-    Token Budget
-    Micro Batching
-        |
-        |
-       LLM Gateway
-        |
-        |
- Observability Platform
- OpenTelemetry
- Jaeger
- Grafana
+- Which documents were retrieved
+- How context was constructed
+- Where latency was introduced
+- How models executed requests
+- Why failures occurred
+
+EnterpriseRAG-AI introduces observability across the complete AI request lifecycle.
+
+---
+
+## Enterprise Security & Governance
+
+Enterprise AI systems require strong security boundaries.
+
+EnterpriseRAG-AI focuses on:
+
+- Tenant-aware access control
+- Authentication workflows
+- Secure document retrieval
+- Audit visibility
+- Policy-driven AI operations
+
+---
+
+# Architecture
+
+EnterpriseRAG-AI follows a cloud-native AI infrastructure architecture.
+
+```text
+                         Users
+                           |
+                           |
+                    API Gateway Layer
+                           |
+                           |
+              Security & Tenant Control
+              (RBAC + Metadata Policies)
+                           |
+                           |
+              Retrieval Control Plane
+                           |
+              -------------------------
+              |                       |
+        Vector Retrieval          Cache Layer
+             FAISS                  Redis
+              |
+              |
+        Context Optimization
+        Token Management
+        Retrieval Pipeline
+              |
+              |
+             LLM Gateway
+              |
+              |
+       Observability Platform
+              |
+     ---------------------------
+     |            |            |
+ OpenTelemetry  Jaeger   Prometheus/Grafana
 
 
 Future:
 eBPF Kernel Telemetry Layer
-
-Future Research:
-- eBPF Kernel-Level AI Observability
-
-  
 ---
 
-# High-Level Architecture
+# Core Capabilities
 
-```text
-                         ┌─────────────────────────┐
-                         │ Client Applications     │
-                         │ Web • Dashboard • APIs  │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │ NGINX Gateway Layer     │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │ FastAPI Async Services  │
-                         └────────────┬────────────┘
-                                      │
-          ┌───────────────┬───────────┼─────────────┬───────────────┐
-          ▼               ▼           ▼             ▼
-   ┌───────────┐   ┌───────────┐ ┌───────────┐ ┌────────────┐
-   │ Redis     │   │ FAISS     │ │ PostgreSQL│ │ Celery     │
-   │ Cache     │   │ Retrieval │ │ Database  │ │ Workers    │
-   └─────┬─────┘   └─────┬─────┘ └─────┬─────┘ └─────┬──────┘
-         │               │             │             │
-         └───────────────┴─────────────┼─────────────┘
-                                       │
-                                       ▼
-                         ┌─────────────────────────┐
-                         │ Context Assembly Layer  │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │ LLM Execution Pipeline  │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │ Streaming Response Bus  │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                         ┌─────────────────────────┐
-                         │ OpenTelemetry Tracing   │
-                         └────────────┬────────────┘
-                                      │
-                                      ▼
-                   ┌──────────────────────────────────────┐
-                   │ Jaeger • Prometheus • Grafana        │
-                   └──────────────────────────────────────┘
-```
+## Retrieval Infrastructure
+
+EnterpriseRAG-AI focuses on building reliable retrieval workflows for enterprise AI applications.
+
+Capabilities include:
+
+- Semantic vector retrieval
+- Hybrid retrieval workflows
+- Document processing pipelines
+- Context optimization
+- Retrieval diagnostics
+- Query analysis
+- Metadata-aware retrieval
+- Retrieval performance monitoring
+
 
 ---
 
-# Request Lifecycle Visibility
+## AI Observability
 
-EnterpriseRAG AI is being designed around complete request lifecycle instrumentation.
+Production AI systems require complete visibility across execution workflows.
 
-The platform aims to visualize:
+EnterpriseRAG-AI provides observability capabilities across:
 
-```text
-User Query
-    ↓
-Embedding Generation
-    ↓
-Semantic Retrieval
-    ↓
-Chunk Ranking
-    ↓
-Context Assembly
-    ↓
-LLM Inference
-    ↓
-Realtime Streaming
-    ↓
-Trace Generation
-    ↓
-Metrics Aggregation
-```
+- Request lifecycle tracking
+- Retrieval execution stages
+- LLM execution flow
+- Token usage monitoring
+- Latency analysis
+- Distributed tracing
+- Infrastructure telemetry
 
-This infrastructure-oriented workflow visibility is one of the primary engineering goals of the platform.
 
 ---
 
-# Planned Infrastructure Visualizations
+## Security & Governance Layer
 
-## Retrieval Workflow Visualization
+Enterprise AI workloads require secure boundaries around data and execution.
 
-Interactive retrieval diagnostics showing:
+The platform provides foundations for:
 
-* semantic chunk boundaries
-* retrieval rankings
-* similarity scores
-* context injection workflows
-* retrieval latency metrics
-* embedding relationships
-* query execution diagnostics
+- Authentication and authorization
+- Role-based access control
+- Tenant-aware data isolation
+- Audit logging
+- Secure retrieval workflows
+- Policy-driven AI operations
+
 
 ---
+
+## Reliability Engineering
+
+EnterpriseRAG-AI explores reliability patterns required for production AI infrastructure.
+
+Engineering areas include:
+
+- Async execution workflows
+- Background processing systems
+- Error handling mechanisms
+- Retry strategies
+- Failure diagnostics
+- Infrastructure health monitoring
+
+
+---
+
+# Enterprise Control Center
+
+EnterpriseRAG-AI includes a unified operational dashboard designed for AI infrastructure management.
+
+The control center provides a single interface to understand, monitor, and debug AI workloads.
+
+## Dashboard Modules
+
+### System Overview
+
+Provides visibility into:
+
+- Service health
+- Active workloads
+- Request activity
+- Infrastructure status
+- System performance
+
+
+### Retrieval Intelligence
+
+Provides insights into:
+
+- Retrieval latency
+- Retrieved documents
+- Context quality
+- Ranking information
+- Query execution flow
+
+
+### Observability Center
+
+Tracks:
+
+- Distributed traces
+- Request spans
+- Backend execution stages
+- Latency bottlenecks
+- Infrastructure events
+
+
+### Security Operations
+
+Provides:
+
+- Security events
+- Audit history
+- Access monitoring
+- Tenant activity
+- Governance visibility
+
+
+### Infrastructure Monitoring
+
+Visualizes:
+
+- Service dependencies
+- Worker status
+- Database health
+- Cache activity
+- Infrastructure topology
+
+
+### Analytics
+
+Future analytics modules include:
+
+- Token usage analysis
+- AI workload cost insights
+- Performance trends
+- Usage patterns
+
+
+---
+
+# Infrastructure Visualization Roadmap
+
+EnterpriseRAG-AI is designed around infrastructure-level visibility.
+
+Planned visualization systems:
+
+## Infrastructure Topology Canvas
+
+Interactive visualization of:
+
+- API Gateway
+- Security Layer
+- Retrieval Engine
+- Vector Database
+- Cache Layer
+- LLM Gateway
+- Workers
+- Observability Components
+
+
+## Retrieval Debug Inspector
+
+A workspace for understanding:
+
+- Query execution
+- Retrieved chunks
+- Ranking decisions
+- Context assembly
+- Retrieval quality
+
 
 ## Distributed Trace Explorer
 
-Infrastructure trace visualization focused on:
+A debugging interface for:
 
-* request spans
-* backend execution stages
-* latency breakdowns
-* queue wait times
-* streaming execution visibility
-* distributed trace correlation
-* infrastructure bottleneck diagnostics
+- Request traces
+- Execution spans
+- Latency breakdowns
+- Service dependencies
 
----
 
-## Streaming Observability Dashboard
+## Token & Cost Analytics
 
-Realtime streaming analytics focused on:
+Monitoring for:
 
-* token streaming metrics
-* stream lifecycle diagnostics
-* concurrent stream visibility
-* latency instrumentation
-* websocket activity monitoring
-* realtime infrastructure events
+- Token consumption
+- Request costs
+- Usage trends
+- Optimization opportunities
 
----
-
-# Engineering Roadmap
-
-| Area                       | Planned Work                                           | Status      |
-| -------------------------- | ------------------------------------------------------ | ----------- |
-| Retrieval Visualization    | Interactive retrieval workflow visualization dashboard | Planned     |
-| Chunk Diagnostics          | Semantic chunk debugger and retrieval explorer         | Planned     |
-| Request Lifecycle Explorer | Full request execution visualization                   | Planned     |
-| Streaming Infrastructure   | SSE/WebSocket streaming observability                  | In Progress |
-| Distributed Tracing        | Trace explorer and latency analytics                   | In Progress |
-| Metrics Infrastructure     | Retrieval throughput and latency instrumentation       | In Progress |
-| Reliability Engineering    | Retry orchestration and replay workflows               | Planned     |
-| Queue Infrastructure       | Queue-aware async execution systems                    | Planned     |
-| Infrastructure Monitoring  | Expanded Prometheus and Grafana telemetry              | Planned     |
-| Kubernetes Workflows       | Scalable deployment infrastructure                     | Planned     |
-| Backend Diagnostics        | Infrastructure failure analysis tooling                | Planned     |
-| AI Systems Instrumentation | Advanced telemetry pipelines for retrieval systems     | Planned     |
-| Event Streaming Infrastructure | Apache Kafka Integration | Planned |
-
----
-
-# Contribution Areas
-
-Contributions are welcome across:
-
-* observability dashboards
-* infrastructure visualization systems
-* realtime streaming workflows
-* distributed tracing integrations
-* retrieval diagnostics
-* queue orchestration workflows
-* backend reliability tooling
-* infrastructure telemetry systems
-* developer tooling improvements
-* frontend infrastructure engineering
-* AI systems instrumentation
-* infrastructure monitoring workflows
-
----
-
-# Open Source Engineering Direction
-
-EnterpriseRAG AI is being developed as an engineering-oriented open-source platform focused on infrastructure experimentation and backend systems learning.
-
-The project prioritizes:
-
-* practical backend engineering
-* infrastructure visibility
-* observability-first architectures
-* scalable retrieval workflows
-* distributed systems experimentation
-* async infrastructure patterns
-* contributor collaboration
-* engineering-focused OSS workflows
-
-Rather than positioning itself as a finished enterprise platform, the repository focuses on exploring scalable infrastructure concepts involved in modern AI systems engineering.
 
 ---
 
@@ -355,75 +333,91 @@ Rather than positioning itself as a finished enterprise platform, the repository
 ## Backend Infrastructure
 
 - FastAPI
-- Redis
+- Python
 - PostgreSQL
-- SQLAlchemy
+- Redis
 - FAISS
 - Celery
 
-### Planned Infrastructure
-
-- Apache Kafka (Event Streaming)
-- Queue Buffer Mesh
-- Event-Driven Processing Pipelines
 
 ## Frontend Infrastructure
 
-* React
-* TypeScript
-* Recharts
+- React
+- TypeScript
+- Tailwind CSS
+- Recharts
+- React Flow
+
 
 ## Observability Stack
 
-* OpenTelemetry
-* Jaeger
-* Prometheus
-* Grafana
+- OpenTelemetry
+- Jaeger
+- Prometheus
+- Grafana
 
-## Infrastructure & Deployment
 
-* Docker
-* NGINX
-* Railway
-* Vercel
-* Kubernetes (Planned)
+## Infrastructure
 
----
+- Docker
+- NGINX
+- Kubernetes
+- Vercel
 
-# Engineering Areas Explored
-
-* distributed systems engineering
-* async backend infrastructure
-* semantic retrieval systems
-* realtime streaming workflows
-* observability-first architectures
-* distributed tracing systems
-* infrastructure telemetry pipelines
-* queue-driven orchestration
-* reliability engineering workflows
-* infrastructure diagnostics
-* scalable AI backend experimentation
-* retrieval infrastructure instrumentation
 
 ---
 
-# Open Source Collaboration
+# Engineering Roadmap
 
-EnterpriseRAG AI actively encourages contributor collaboration around:
-
-* RAG infrastructure visualization
-* streaming observability
-* infrastructure monitoring
-* backend telemetry workflows
-* distributed tracing systems
-* retrieval optimization
-* async infrastructure engineering
-* developer experience tooling
-* observability-first backend systems
+| Area | Status |
+|------|--------|
+| RAG Pipeline | Active |
+| Retrieval Optimization | Active |
+| Security Controls | Active |
+| Observability Layer | Active |
+| Enterprise Dashboard | In Progress |
+| Retrieval Debugging Tools | In Progress |
+| Distributed Trace Explorer | In Progress |
+| Infrastructure Topology | In Progress |
+| Token Usage Analytics | Planned |
+| AI Agent Monitoring | Planned |
+| eBPF Kernel Telemetry | Research |
+| Advanced Governance Layer | Planned |
 
 ---
-## Contributors
+---
 
-<a href="https://github.com/devloperdevesh/FaultPlane/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=devloperdevesh/FaultPlane" />
-</a>
+# Repository Architecture
+
+EnterpriseRAG-AI follows a modular architecture designed for scalability, maintainability, and enterprise deployment.
+
+
+```text
+EnterpriseRAG-AI
+│
+├── frontend/
+│   ├── components/
+│   ├── dashboard/
+│   ├── pages/
+│   └── services/
+│
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── models/
+│   │   ├── rag/
+│   │   ├── services/
+│   │   └── workers/
+│
+├── infrastructure/
+│   ├── docker/
+│   ├── kubernetes/
+│   ├── monitoring/
+│   └── deployment/
+│
+├── docs/
+│
+├── tests/
+│
+└── README.md
