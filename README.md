@@ -7,17 +7,14 @@
   The Linux-Native, eBPF-Powered Security & Governance Mesh for AI Agent Workloads
 </p>
 
-<p align="center">
+<div align="center">
 
-[![CI](https://github.com/devloperdevesh/EnterpriseRAG-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/devloperdevesh/EnterpriseRAG-AI/actions)
+[![License](https://img.shields.io/github/license/devloperdevesh/EnterpriseRAG-AI?style=flat-square)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/devloperdevesh/EnterpriseRAG-AI?style=flat-square)](https://github.com/devloperdevesh/EnterpriseRAG-AI/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/devloperdevesh/EnterpriseRAG-AI?style=flat-square)](https://github.com/devloperdevesh/EnterpriseRAG-AI/network/members)
+[![Contributors](https://img.shields.io/github/contributors/devloperdevesh/EnterpriseRAG-AI?style=flat-square)](https://github.com/devloperdevesh/EnterpriseRAG-AI/graphs/contributors)
 
-[![License](https://img.shields.io/github/license/devloperdevesh/EnterpriseRAG-AI)](LICENSE)
-
-[![Stars](https://img.shields.io/github/stars/devloperdevesh/EnterpriseRAG-AI)](https://github.com/devloperdevesh/EnterpriseRAG-AI)
-
-[![Contributors](https://img.shields.io/github/contributors/devloperdevesh/EnterpriseRAG-AI)](https://github.com/devloperdevesh/EnterpriseRAG-AI/graphs/contributors)
-
-</p>
+</div>
 
 ---
 
