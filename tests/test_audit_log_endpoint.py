@@ -1,20 +1,29 @@
 """Tests for the query audit log endpoint."""
 
+import os
 from unittest.mock import AsyncMock, patch
+
+# Test environment variables required by app.core.config.Settings()
+os.environ["SECRET_KEY"] = "test-secret-key"
+os.environ["DATABASE_URL"] = "sqlite:///./test.db"
 
 import pytest
 from fastapi.testclient import TestClient
+
+from app.core.dependencies import get_current_user
 
 
 @pytest.fixture
 def mock_user():
     class _User:
         id = "user-test-001"
+
     return _User()
 
 
 def test_get_audit_log_returns_entries(mock_user):
     """GET /api/rag/audit-log should return user's history entries."""
+
     sample_entries = [
         {
             "id": "abc123",
@@ -33,21 +42,23 @@ def test_get_audit_log_returns_entries(mock_user):
     with patch(
         "app.api.routes.audit_log.get_history",
         new=AsyncMock(return_value=sample_entries),
-    ), patch(
-        "app.api.routes.audit_log.get_current_user",
-        return_value=mock_user,
     ):
         from app.api.routes.audit_log import router
         from fastapi import FastAPI
 
         app = FastAPI()
         app.include_router(router)
+
+        app.dependency_overrides[get_current_user] = lambda: mock_user
+
         client = TestClient(app)
 
         response = client.get("/api/rag/audit-log")
 
     assert response.status_code == 200
+
     data = response.json()
+
     assert data["user_id"] == "user-test-001"
     assert data["count"] == 1
     assert data["entries"][0]["query"] == "What is RAG?"
@@ -55,18 +66,19 @@ def test_get_audit_log_returns_entries(mock_user):
 
 def test_clear_audit_log(mock_user):
     """DELETE /api/rag/audit-log should clear user history."""
+
     with patch(
         "app.api.routes.audit_log.delete_history",
         new=AsyncMock(return_value=None),
-    ), patch(
-        "app.api.routes.audit_log.get_current_user",
-        return_value=mock_user,
     ):
         from app.api.routes.audit_log import router
         from fastapi import FastAPI
 
         app = FastAPI()
         app.include_router(router)
+
+        app.dependency_overrides[get_current_user] = lambda: mock_user
+
         client = TestClient(app)
 
         response = client.delete("/api/rag/audit-log")
