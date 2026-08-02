@@ -228,3 +228,15 @@ If you are contributing as part of **GirlScript Summer of Code 2026**:
 ---
 
 > For questions, open a Discussion or comment on the relevant issue. Please do not DM maintainers directly for contribution guidance.
+
+## Observability Contribution Standard
+
+Every new FastAPI endpoint or retrieval operation you add should emit at least one OpenTelemetry span. Before submitting a PR:
+
+1. Start the monitoring stack: `docker-compose up -d`
+2. Run the API: `uvicorn app.main:app --reload`
+3. Trigger your new code path with a test request
+4. Open Jaeger at **http://localhost:16686** → select `enterpriserag-api`
+5. Confirm your code path appears as a named span in the trace
+
+PRs adding new endpoints without corresponding trace spans will be asked to add instrumentation before merge. See `monitoring/README.md` for the full setup guide.
