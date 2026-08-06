@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 from contextlib import nullcontext
 from time import perf_counter
 
@@ -21,6 +21,7 @@ except ImportError:  # pragma: no cover - observability is optional in tests
     trace = _NoopTrace()
 
 from app.core.dependencies import get_current_user
+from app.observability.metrics_log import record_metric
 from app.rag.query_history import record_query, get_history, MAX_HISTORY_PER_USER
 
 router = APIRouter(prefix="/rag", tags=["rag"])
@@ -58,7 +59,7 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
     """
     question = data.question
     from app.rag.embeddings import generate_embedding
-    from app.rag.llm import generate_answer
+    from app.rag.llm import generate_answer_with_usage
     from app.rag.vector_store import search_embedding_scored
 
     with tracer.start_as_current_span("rag-query"):
@@ -81,9 +82,16 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
         # ---- LLM phase: answer generation ----
         llm_start = perf_counter()
         with tracer.start_as_current_span("llm-call"):
-            answer = await asyncio.to_thread(generate_answer, context, question)
+            answer, usage = await asyncio.to_thread(
+                generate_answer_with_usage, context, question
+            )
         llm_ms = round((perf_counter() - llm_start) * 1000, 2)
         total_ms = round(retrieval_ms + llm_ms, 2)
+
+        top_scores = [chunk["score"] for chunk in results]
+        source_documents = sorted(
+            {chunk["source"] for chunk in results if chunk["source"]}
+        )
 
         # ---- Record observability metadata ----
         # Dispatched fire-and-forget (with an internal timeout) so a slow Redis
@@ -94,13 +102,29 @@ async def stream_query(data: RAGQuery, user=Depends(get_current_user)):
                 query=question,
                 answer_summary=answer[:200],
                 chunk_count=len(results),
-                top_scores=[chunk["score"] for chunk in results],
-                source_documents=sorted(
-                    {chunk["source"] for chunk in results if chunk["source"]}
-                ),
+                top_scores=top_scores,
+                source_documents=source_documents,
                 retrieval_latency_ms=retrieval_ms,
                 llm_latency_ms=llm_ms,
                 total_latency_ms=total_ms,
+            )
+        )
+
+        # ---- Record tenant-wide dashboard metrics (issue #117) ----
+        _dispatch_background(
+            record_metric(
+                user.get("tenant_id"),
+                user_id=user["user_id"],
+                query=question,
+                prompt_tokens=usage["prompt_tokens"],
+                completion_tokens=usage["completion_tokens"],
+                total_tokens=usage["total_tokens"],
+                retrieval_latency_ms=retrieval_ms,
+                llm_latency_ms=llm_ms,
+                total_latency_ms=total_ms,
+                top_score=max(top_scores) if top_scores else 0.0,
+                chunk_count=len(results),
+                source_documents=source_documents,
             )
         )
 

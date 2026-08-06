@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException, status
+﻿from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import generate_latest
 from starlette.responses import Response
@@ -6,6 +6,7 @@ from starlette.responses import Response
 from app.api.routes.auth import router as auth_router
 from app.api.routes.dashboard import router as dashboard_router
 from app.api.routes.document import router as document_router
+from app.api.routes.metrics_dashboard import router as metrics_dashboard_router
 from app.api.routes.rag import router as rag_router
 from app.api.routes.tenants import router as tenants_router
 from app.core.config import settings
@@ -46,6 +47,7 @@ app.include_router(dashboard_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
+app.include_router(metrics_dashboard_router)
 
 
 @app.get("/")

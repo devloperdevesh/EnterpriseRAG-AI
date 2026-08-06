@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+﻿import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 /* =========================================================
    LANDING
@@ -18,6 +18,7 @@ import Signup from "../auth/Signup";
 ========================================================= */
 
 import Dashboard from "../pages/Dashboard";
+import ObservabilityDashboard from "../pages/ObservabilityDashboard";
 
 import Chat from "../app/pages/Chat";
 import Documents from "../app/pages/Documents";
@@ -53,6 +54,8 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route path="/dashboard/observability" element={<ObservabilityDashboard />} />
 
             <Route path="/chat" element={<Chat />} />
 
