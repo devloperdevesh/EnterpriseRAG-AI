@@ -268,8 +268,8 @@ Realtime streaming analytics focused on:
 | Infrastructure Monitoring  | Expanded Prometheus and Grafana telemetry              | Planned     |
 | Kubernetes Workflows       | Scalable deployment infrastructure                     | Planned     |
 | Backend Diagnostics        | Infrastructure failure analysis tooling                | Planned     |
-| AI Systems Instrumentation | Advanced telemetry pipelines for retrieval systems     | Planned     |
-| Event Streaming Infrastructure | Apache Kafka Integration | Planned |
+| AI Systems Instrumentation     | Advanced telemetry pipelines for retrieval systems      | Planned     |
+| Event Streaming Infrastructure | Apache Kafka Integration                                | Planned     |
 
 ---
 
