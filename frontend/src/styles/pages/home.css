@@ -3,11 +3,12 @@
 ========================================================= */
 
 .hero-section {
-    padding:
-        140px 24px 110px;
+    position: relative;
+    overflow: hidden;
 
-    background:
-        var(--bg-main);
+    padding: 140px 24px 110px;
+
+    background: var(--bg-main);
 
     text-align: center;
 }
@@ -17,8 +18,10 @@
 ========================================================= */
 
 .hero-container {
-    max-width: 980px;
+    position: relative;
+    z-index: 2;
 
+    max-width: 980px;
     margin: 0 auto;
 }
 
@@ -289,4 +292,57 @@
   .home-card {
     padding: 15px;
   }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-background {
+        animation: none;
+    }
+}
+
+/* =========================================================
+   HERO ANIMATED BACKGROUND
+========================================================= */
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+    pointer-events: none;
+
+    background:
+        radial-gradient(circle at 20% 20%, rgba(37,99,235,0.35), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(124,58,237,0.30), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(6,182,212,0.28), transparent 45%);
+
+    background-size: 250% 250%;
+
+    animation: gradientMove 8s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 100% 20%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    75% {
+        background-position: 20% 100%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
