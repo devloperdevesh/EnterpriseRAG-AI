@@ -54,7 +54,10 @@ async def get_audit_log(
     Raises:
         HTTPException 500: When the Redis read fails unexpectedly.
     """
-    user_id = getattr(current_user, "id", None) or getattr(current_user, "user_id", None)
+    if isinstance(current_user, dict):
+       user_id = current_user.get("user_id")
+    else:
+       user_id = getattr(current_user, "id", None) or getattr(current_user, "user_id", None)
     if user_id is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

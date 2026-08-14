@@ -1,3 +1,5 @@
+from app.api.routes.health import router as health_router
+import app.api.routes.health as health_state
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import generate_latest
@@ -37,8 +39,12 @@ app.add_middleware(MetricsMiddleware)
 
 @app.on_event("startup")
 async def startup_event():
+    health_state.is_ready = False
+
     init_db()
     await init_redis()
+
+    health_state.is_ready = True
 
 
 app.include_router(auth_router)
@@ -46,6 +52,7 @@ app.include_router(dashboard_router)
 app.include_router(tenants_router)
 app.include_router(document_router)
 app.include_router(rag_router)
+app.include_router(health_router)
 
 
 @app.get("/")
@@ -59,7 +66,13 @@ def health():
 
 
 @app.get("/metrics")
-def metrics():
+def metrics(user=Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not allowed",
+        )
+
     return Response(generate_latest(), media_type="text/plain")
 
 
