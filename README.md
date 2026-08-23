@@ -86,47 +86,9 @@ EnterpriseRAG-AI focuses on:
 
 ---
 
-# Architecture
-
-EnterpriseRAG-AI follows a cloud-native AI infrastructure architecture.
-
-```text
-                         Users
-                           |
-                           |
-                    API Gateway Layer
-                           |
-                           |
-              Security & Tenant Control
-              (RBAC + Metadata Policies)
-                           |
-                           |
-              Retrieval Control Plane
-                           |
-              -------------------------
-              |                       |
-        Vector Retrieval          Cache Layer
-             FAISS                  Redis
-              |
-              |
-        Context Optimization
-        Token Management
-        Retrieval Pipeline
-              |
-              |
-             LLM Gateway
-              |
-              |
-       Observability Platform
-              |
-     ---------------------------
-     |            |            |
- OpenTelemetry  Jaeger   Prometheus/Grafana
-
 
 Future:
 eBPF Kernel Telemetry Layer
----
 
 # Core Capabilities
 
@@ -388,8 +350,6 @@ Monitoring for:
 
 EnterpriseRAG-AI follows a modular architecture designed for scalability, maintainability, and enterprise deployment.
 
-
-```text
 EnterpriseRAG-AI
 │
 ├── frontend/
@@ -418,3 +378,43 @@ EnterpriseRAG-AI
 ├── tests/
 │
 └── README.md
+
+Architecture
+
+# EnterpriseRAG-AI follows a cloud-native AI infrastructure architecture.
+
+```text
+                         Users
+                           |
+                           |
+                    API Gateway Layer
+                           |
+                           |
+              Security & Tenant Control
+              (RBAC + Metadata Policies)
+                           |
+                           |
+              Retrieval Control Plane
+                           |
+              -------------------------
+              |                       |
+        Vector Retrieval          Cache Layer
+             FAISS                  Redis
+              |
+              |
+        Context Optimization
+        Token Management
+        Retrieval Pipeline
+              |
+              |
+             LLM Gateway
+              |
+              |
+       Observability Platform
+              |
+     ---------------------------
+     |            |            |
+ OpenTelemetry  Jaeger   Prometheus/Grafana
+
+   ```text
+
