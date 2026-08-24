@@ -344,40 +344,6 @@ Monitoring for:
 | Advanced Governance Layer | Planned |
 
 ---
----
-
-# Repository Architecture
-
-EnterpriseRAG-AI follows a modular architecture designed for scalability, maintainability, and enterprise deployment.
-
-EnterpriseRAG-AI
-│
-├── frontend/
-│   ├── components/
-│   ├── dashboard/
-│   ├── pages/
-│   └── services/
-│
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── models/
-│   │   ├── rag/
-│   │   ├── services/
-│   │   └── workers/
-│
-├── infrastructure/
-│   ├── docker/
-│   ├── kubernetes/
-│   ├── monitoring/
-│   └── deployment/
-│
-├── docs/
-│
-├── tests/
-│
-└── README.md
 
 Architecture
 
